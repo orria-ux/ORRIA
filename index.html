@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -274,20 +275,19 @@ async function placeOrder(){
  if(badStock.length){alert("Some items are not available in the requested quantity:\n\n"+badStock.join("\n"));await loadProductsFromSupabase();return}
  let a=`${house}, ${area}, ${city}, ${state} - ${p}`;let subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0),ship=shippingForPin(p,subtotal);let total=subtotal+(ship||0),orderId="ORR-"+Date.now().toString().slice(-7);
  const items=cart.map(x=>`${x.name} x${x.qty}${x.personal?" (Personalised: "+x.personal+")":""}`).join("\n");
- const payload={order_number:orderId,customer_name:n,phone:m,total:Number(total),status:"Pending"};
+ const payload={order_number:orderId,customer_name:n,phone:m,delivery_address:a,total:Number(total),status:"Pending"};
  if(window.ORRIA_SB){
    const {error}=await window.ORRIA_SB.from("orders").insert(payload);
    if(error){alert("Order save nahi ho saka. Please try again.\n\n"+error.message);return}
  }
  let text=`Hello ORRIA, I would like to place an order.\n\nOrder ID: ${orderId}\n${items}\n\nSubtotal: ${money(subtotal)}\nShipping: ${ship===0?"FREE":money(ship)}\nTotal: ${money(total)}\nPayment: ${pay}\nName: ${n}\nMobile: ${m}\nPIN: ${p}\nAddress: ${a}`;
- window.open("https://wa.me/918299561267?text="+encodeURIComponent(text),"_blank");cart=[];save();closeModal();document.getElementById("confirmationText").textContent=`Order ${orderId} has been placed and saved. Total: ${money(total)}. We have opened WhatsApp with the complete order details.`;go("confirmation")}
+ window.open("https://wa.me/918299561267?text="+encodeURIComponent(text),"_blank");cart=[];save();closeModal();document.getElementById("confirmationText").textContent=`Order ${orderId} has been placed and saved. Total: ${money(total)}. We have opened WhatsApp with the complete order details.`;go("confirmation");setTimeout(()=>go("home"),2500)}
 renderHome();updateCounts();initNavigation();
 </script>
 \n<script id="orriaSupabaseLayer">
 const ORRIA_SB_URL="https://kuvaxkdhfxzznzidaugv.supabase.co";
 const ORRIA_SB_KEY="sb_publishable_PiB7aj8bDrfwAjAyDz2I9g_5t9wdtTk";
-const ORRIA_SB=window.supabase?.createClient(ORRIA_SB_URL,ORRIA_SB_KEY);
-  window.ORRIA_SB=ORRIA_SB;
+window.ORRIA_SB=window.supabase?.createClient(ORRIA_SB_URL,ORRIA_SB_KEY);
 let orriaDbSyncOk=false;
 async function loadProductsFromSupabase(){
   if(!ORRIA_SB){console.warn("ORRIA: Supabase client unavailable");return false;}
@@ -584,4 +584,3 @@ window.orriaV18Ready=true;
 </script>
 <script>/* V32: removed undefined loadRealProducts() call; keeps customer UI responsive. */</script>
 </body></html>
-
