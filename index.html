@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
@@ -275,7 +274,7 @@ async function placeOrder(){
  if(badStock.length){alert("Some items are not available in the requested quantity:\n\n"+badStock.join("\n"));await loadProductsFromSupabase();return}
  let a=`${house}, ${area}, ${city}, ${state} - ${p}`;let subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0),ship=shippingForPin(p,subtotal);let total=subtotal+(ship||0),orderId="ORR-"+Date.now().toString().slice(-7);
  const items=cart.map(x=>`${x.name} x${x.qty}${x.personal?" (Personalised: "+x.personal+")":""}`).join("\n");
- const payload={order_number:orderId,customer_name:n,total:Number(total),status:"Pending"};
+ const payload={order_number:orderId,customer_name:n,phone:m,total:Number(total),status:"Pending"};
  if(window.ORRIA_SB){
    const {error}=await window.ORRIA_SB.from("orders").insert(payload);
    if(error){alert("Order save nahi ho saka. Please try again.\n\n"+error.message);return}
