@@ -288,6 +288,7 @@ renderHome();updateCounts();initNavigation();
 const ORRIA_SB_URL="https://kuvaxkdhfxzznzidaugv.supabase.co";
 const ORRIA_SB_KEY="sb_publishable_PiB7aj8bDrfwAjAyDz2I9g_5t9wdtTk";
 const ORRIA_SB=window.supabase?.createClient(ORRIA_SB_URL,ORRIA_SB_KEY);
+  window.ORRIA_SB=ORRIA_SB;
 let orriaDbSyncOk=false;
 async function loadProductsFromSupabase(){
   if(!ORRIA_SB){console.warn("ORRIA: Supabase client unavailable");return false;}
