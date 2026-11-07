@@ -1,12 +1,12 @@
 -- ORRIA payment hardening migration
--- Apply in Supabase SQL Editor after taking a database backup.
+-- Apply only after exporting a backup of the Free-tier production database.
 -- This migration intentionally fails if legacy duplicate payment IDs exist.
 
 ALTER TABLE public.orders
   ADD COLUMN IF NOT EXISTS razorpay_order_id text;
 
-ALTER TABLE public.orders
-  ADD COLUMN IF NOT EXISTS payment_status text NOT NULL DEFAULT 'pending';
+-- payment_status already exists in production and is constrained to
+-- Pending / Paid / Failed / Refunded. Do not recreate or change its values.
 
 CREATE UNIQUE INDEX IF NOT EXISTS orders_razorpay_order_id_uidx
   ON public.orders (razorpay_order_id)
@@ -32,7 +32,6 @@ DECLARE
   v_order public.orders%ROWTYPE;
   v_existing public.payments%ROWTYPE;
   v_item record;
-  v_amount numeric;
 BEGIN
   IF p_order_number IS NULL OR p_razorpay_order_id IS NULL
      OR p_payment_id IS NULL OR p_amount_paise IS NULL OR p_amount_paise <= 0 THEN
@@ -66,12 +65,13 @@ BEGIN
        OR v_existing.status <> 'captured' THEN
       RAISE EXCEPTION 'Payment ID is already associated with another or invalid payment' USING ERRCODE = '23514';
     END IF;
-    IF v_order.status = 'Confirmed' AND v_order.payment_status = 'paid' THEN
+    IF v_order.status = 'Confirmed' AND v_order.payment_status = 'Paid' THEN
       RETURN jsonb_build_object('verified', true, 'already_processed', true, 'order_number', p_order_number);
     END IF;
+    RAISE EXCEPTION 'Payment record exists but order is not finalized; manual review required' USING ERRCODE = '23514';
   END IF;
 
-  IF v_order.status = 'Confirmed' AND v_order.payment_status = 'paid' THEN
+  IF v_order.status = 'Confirmed' AND v_order.payment_status = 'Paid' THEN
     RAISE EXCEPTION 'Order is already confirmed with a different payment' USING ERRCODE = '23514';
   END IF;
 
@@ -87,6 +87,10 @@ BEGIN
     GROUP BY product_id
     ORDER BY product_id
   LOOP
+    IF v_item.product_id IS NULL THEN
+      RAISE EXCEPTION 'Order item has no product reference' USING ERRCODE = '23514';
+    END IF;
+
     UPDATE public.products
        SET stock = stock - v_item.quantity,
            updated_at = now()
@@ -99,14 +103,11 @@ BEGIN
   END LOOP;
 
   INSERT INTO public.payments (order_id, provider, provider_payment_id, amount, status)
-  VALUES (v_order.id, 'razorpay', p_payment_id, v_order.total, 'captured')
-  ON CONFLICT (provider, provider_payment_id)
-    WHERE provider_payment_id IS NOT NULL
-  DO NOTHING;
+  VALUES (v_order.id, 'razorpay', p_payment_id, v_order.total, 'captured');
 
   UPDATE public.orders
      SET status = 'Confirmed',
-         payment_status = 'paid',
+         payment_status = 'Paid',
          updated_at = now()
    WHERE id = v_order.id;
 
