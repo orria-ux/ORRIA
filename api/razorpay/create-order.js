@@ -122,7 +122,7 @@ module.exports = async function handler(req, res) {
         shipping,
         total,
         status: 'Pending',
-        payment_status: 'pending',
+        payment_status: 'Pending',
         razorpay_order_id: razorpayOrderId
       })
     });
