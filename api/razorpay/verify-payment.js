@@ -17,51 +17,71 @@ async function supabase(path, options = {}) {
       ...(options.headers || {})
     }
   });
-  const text = await r.text();
+  const raw = await r.text();
   let data = null;
-  try { data = text ? JSON.parse(text) : null; } catch (_) { data = text; }
+  try { data = raw ? JSON.parse(raw) : null; } catch (_) { data = raw; }
   if (!r.ok) throw new Error(data?.message || data?.error || `Supabase ${r.status}`);
   return data;
 }
 
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') return json(res, 405, { error: 'Method not allowed' });
-  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET || !process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    return json(res, 500, { error: 'Server payment configuration is incomplete' });
-  }
-  try {
-    const { orderNumber, razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body || {};
-    if (!orderNumber || !razorpay_order_id || !razorpay_payment_id || !razorpay_signature) return json(res, 400, { error: 'Missing payment verification fields' });
+  const required = ['RAZORPAY_KEY_ID', 'RAZORPAY_KEY_SECRET', 'SUPABASE_URL', 'SUPABASE_SERVICE_ROLE_KEY'];
+  if (required.some((name) => !process.env[name])) return json(res, 500, { error: 'Server payment configuration is incomplete' });
 
-    const orders = await supabase(`orders?select=order_number,total,status&order_number=eq.${encodeURIComponent(String(orderNumber))}&limit=1`);
+  try {
+    const { orderNumber, razorpay_order_id: razorpayOrderId, razorpay_payment_id: paymentId, razorpay_signature: signature } = req.body || {};
+    if (![orderNumber, razorpayOrderId, paymentId, signature].every((value) => typeof value === 'string' && value.length > 0)) {
+      return json(res, 400, { error: 'Missing payment verification fields' });
+    }
+    if (orderNumber.length > 32 || razorpayOrderId.length > 64 || paymentId.length > 64 || signature.length !== 64) {
+      return json(res, 400, { error: 'Invalid payment verification fields' });
+    }
+
+    const orders = await supabase(
+      `orders?select=id,order_number,total,status,payment_status,razorpay_order_id&order_number=eq.${encodeURIComponent(orderNumber)}&limit=1`
+    );
     const localOrder = orders[0];
     if (!localOrder) return json(res, 404, { error: 'ORRIA order not found' });
+    if (localOrder.razorpay_order_id !== razorpayOrderId) return json(res, 400, { error: 'Razorpay order does not match ORRIA order' });
 
-    const orderResponse = await fetch(`${RAZORPAY_BASE}/orders/${encodeURIComponent(razorpay_order_id)}`, { headers: { Authorization: authHeader() } });
-    const rpOrder = await orderResponse.json();
-    if (!orderResponse.ok) return json(res, 502, { error: 'Could not verify Razorpay order' });
-    if (String(rpOrder.receipt || '') !== String(orderNumber)) return json(res, 400, { error: 'Payment/order mismatch' });
-    if (Number(rpOrder.amount) !== Number(localOrder.total) * 100) return json(res, 400, { error: 'Payment amount mismatch' });
-
-    const expected = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET).update(`${rpOrder.id}|${razorpay_payment_id}`).digest('hex');
-    const a = Buffer.from(expected, 'utf8');
-    const b = Buffer.from(String(razorpay_signature), 'utf8');
-    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return json(res, 400, { error: 'Invalid payment signature' });
-
-    const paymentResponse = await fetch(`${RAZORPAY_BASE}/payments/${encodeURIComponent(razorpay_payment_id)}`, { headers: { Authorization: authHeader() } });
-    const payment = await paymentResponse.json();
-    if (!paymentResponse.ok || payment.order_id !== rpOrder.id) return json(res, 502, { error: 'Could not verify payment record' });
-    if (payment.status !== 'captured') return json(res, 409, { error: `Payment status is ${payment.status || 'unknown'}` });
-
-    await supabase(`orders?order_number=eq.${encodeURIComponent(String(orderNumber))}`, {
-      method: 'PATCH',
-      headers: { Prefer: 'return=minimal' },
-      body: JSON.stringify({ status: 'Confirmed' })
+    const orderResponse = await fetch(`${RAZORPAY_BASE}/orders/${encodeURIComponent(razorpayOrderId)}`, {
+      headers: { Authorization: authHeader() }
     });
+    const razorpayOrder = await orderResponse.json();
+    if (!orderResponse.ok) return json(res, 502, { error: 'Could not verify Razorpay order' });
+    if (String(razorpayOrder.receipt || '') !== orderNumber) return json(res, 400, { error: 'Payment/order mismatch' });
+    if (Number(razorpayOrder.amount) !== Math.round(Number(localOrder.total) * 100)) return json(res, 400, { error: 'Payment amount mismatch' });
 
-    return json(res, 200, { verified: true, orderNumber, paymentId: razorpay_payment_id, status: 'captured' });
-  } catch (e) {
-    console.error('verify-payment error', e);
-    return json(res, 500, { error: 'Payment verification failed' });
+    const expected = crypto.createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+      .update(`${razorpayOrderId}|${paymentId}`).digest('hex');
+    const expectedBuffer = Buffer.from(expected, 'hex');
+    const receivedBuffer = Buffer.from(signature, 'hex');
+    if (receivedBuffer.length !== expectedBuffer.length || !crypto.timingSafeEqual(expectedBuffer, receivedBuffer)) {
+      return json(res, 400, { error: 'Invalid payment signature' });
+    }
+
+    const paymentResponse = await fetch(`${RAZORPAY_BASE}/payments/${encodeURIComponent(paymentId)}`, {
+      headers: { Authorization: authHeader() }
+    });
+    const payment = await paymentResponse.json();
+    if (!paymentResponse.ok || payment.order_id !== razorpayOrderId) return json(res, 502, { error: 'Could not verify payment record' });
+    if (payment.status !== 'captured' || Number(payment.amount) !== Number(razorpayOrder.amount)) {
+      return json(res, 409, { error: 'Payment is not captured for the exact order amount' });
+    }
+
+    const result = await supabase('rpc/finalize_razorpay_payment', {
+      method: 'POST',
+      body: JSON.stringify({
+        p_order_number: orderNumber,
+        p_razorpay_order_id: razorpayOrderId,
+        p_payment_id: paymentId,
+        p_amount_paise: Number(payment.amount)
+      })
+    });
+    return json(res, 200, { verified: true, orderNumber, paymentId, status: 'captured', alreadyProcessed: Boolean(result?.already_processed) });
+  } catch (error) {
+    console.error('verify-payment error', error);
+    return json(res, 500, { error: 'Payment verification failed. Please contact ORRIA with your payment ID if your account was charged.' });
   }
 };
