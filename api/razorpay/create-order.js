@@ -44,9 +44,9 @@ module.exports = async function handler(req, res) {
     const couponCode = safeText(body.couponCode, 40).toUpperCase();
     const address = safeText(body.address, 1000);
 
-    if (!/^ORR-?\\d{7,10}$/i.test(orderNumber)) return json(res, 400, { error: 'Invalid ORRIA order number' });
-    if (!/^\\d{6}$/.test(pin)) return json(res, 400, { error: 'Invalid PIN' });
-    if (!/^\\d{10}$/.test(String(customer.phone || ''))) return json(res, 400, { error: 'Invalid mobile number' });
+    if (!/^ORR-?\d{7,10}$/i.test(orderNumber)) return json(res, 400, { error: 'Invalid ORRIA order number' });
+    if (!/^\d{6}$/.test(pin)) return json(res, 400, { error: 'Invalid PIN' });
+    if (!/^\d{10}$/.test(String(customer.phone || ''))) return json(res, 400, { error: 'Invalid mobile number' });
     if (!safeText(customer.name, 120) || !address || !items.length || items.length > 50) return json(res, 400, { error: 'Incomplete order details' });
 
     const existing = await supabase(`orders?select=id&order_number=eq.${encodeURIComponent(orderNumber)}&limit=1`);
