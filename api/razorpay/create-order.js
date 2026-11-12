@@ -35,7 +35,6 @@ module.exports = async function handler(req, res) {
   const missing = requiredEnv();
   if (missing.length) return json(res, 500, { error: 'Server payment configuration is incomplete' });
 
-  let razorpayOrderId = null;
   try {
     const body = req.body || {};
     const orderNumber = safeText(body.orderNumber, 32);
@@ -45,9 +44,9 @@ module.exports = async function handler(req, res) {
     const couponCode = safeText(body.couponCode, 40).toUpperCase();
     const address = safeText(body.address, 1000);
 
-    if (!/^ORR-?\d{7,10}$/i.test(orderNumber)) return json(res, 400, { error: 'Invalid ORRIA order number' });
-    if (!/^\d{6}$/.test(pin)) return json(res, 400, { error: 'Invalid PIN' });
-    if (!/^\d{10}$/.test(String(customer.phone || ''))) return json(res, 400, { error: 'Invalid mobile number' });
+    if (!/^ORR-?\\d{7,10}$/i.test(orderNumber)) return json(res, 400, { error: 'Invalid ORRIA order number' });
+    if (!/^\\d{6}$/.test(pin)) return json(res, 400, { error: 'Invalid PIN' });
+    if (!/^\\d{10}$/.test(String(customer.phone || ''))) return json(res, 400, { error: 'Invalid mobile number' });
     if (!safeText(customer.name, 120) || !address || !items.length || items.length > 50) return json(res, 400, { error: 'Incomplete order details' });
 
     const existing = await supabase(`orders?select=id&order_number=eq.${encodeURIComponent(orderNumber)}&limit=1`);
@@ -83,6 +82,7 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    subtotal = Math.round(subtotal * 100) / 100;
     const discount = couponCode === 'ORRIA150' && subtotal >= 2999 ? 150 : 0;
     const discounted = Math.max(0, subtotal - discount);
     const shipping = discounted >= 1999 ? 0 : 99;
@@ -105,46 +105,40 @@ module.exports = async function handler(req, res) {
     if (!orderResponse.ok || !razorpayOrder.id) {
       return json(res, 502, { error: razorpayOrder?.error?.description || 'Razorpay order creation failed' });
     }
-    razorpayOrderId = razorpayOrder.id;
 
-    const orderRows = await supabase('orders', {
-      method: 'POST',
-      headers: { Prefer: 'return=representation' },
-      body: JSON.stringify({
-        order_number: orderNumber,
-        customer_name: safeText(customer.name, 120),
-        phone: String(customer.phone),
-        email: safeText(customer.email, 254) || null,
-        delivery_address: address,
-        address_snapshot: { address, pin },
-        subtotal,
-        discount,
-        shipping,
-        total,
-        status: 'Pending',
-        payment_status: 'Pending',
-        razorpay_order_id: razorpayOrderId
-      })
-    });
-    const localOrder = orderRows?.[0];
-    if (!localOrder?.id) throw new Error('Order record was not created');
+    const orderRecord = {
+      order_number: orderNumber,
+      customer_name: safeText(customer.name, 120),
+      phone: String(customer.phone),
+      email: safeText(customer.email, 254) || null,
+      delivery_address: address,
+      address_snapshot: { address, pin },
+      subtotal,
+      discount,
+      shipping,
+      total,
+      razorpay_order_id: razorpayOrder.id
+    };
+    const orderItems = normalized.map((item) => ({
+      product_id: item.id,
+      product_name: item.name,
+      price: item.price,
+      quantity: item.qty,
+      line_total: Math.round(item.price * item.qty * 100) / 100
+    }));
 
-    await supabase('order_items', {
+    // A single Postgres function call inserts the order and all items atomically.
+    const localOrderId = await supabase('rpc/create_razorpay_pending_order', {
       method: 'POST',
-      headers: { Prefer: 'return=minimal' },
-      body: JSON.stringify(normalized.map((item) => ({
-        order_id: localOrder.id,
-        product_id: item.id,
-        product_name: item.name,
-        price: item.price,
-        quantity: item.qty,
-        line_total: Math.round(item.price * item.qty * 100) / 100
-      })))
+      body: JSON.stringify({ p_order: orderRecord, p_items: orderItems })
     });
+    if (typeof localOrderId !== 'string' || !localOrderId) {
+      throw new Error('Atomic order creation did not return an order ID');
+    }
 
     return json(res, 200, {
       keyId: process.env.RAZORPAY_KEY_ID,
-      razorpayOrderId,
+      razorpayOrderId: razorpayOrder.id,
       amount: razorpayOrder.amount,
       currency: razorpayOrder.currency,
       orderNumber,
