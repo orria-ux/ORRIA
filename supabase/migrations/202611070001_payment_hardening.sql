@@ -41,7 +41,7 @@ BEGIN
      OR nullif(p_order->>'customer_name', '') IS NULL
      OR nullif(p_order->>'phone', '') IS NULL
      OR nullif(p_order->>'delivery_address', '') IS NULL
-     OR jsonb_typeof(p_order->'address_snapshot') <> 'object'
+     OR jsonb_typeof(p_order->'address_snapshot') IS DISTINCT FROM 'object'
      OR nullif(p_order->>'razorpay_order_id', '') IS NULL THEN
     RAISE EXCEPTION 'Required order fields are missing' USING ERRCODE = '22023';
   END IF;
@@ -242,3 +242,6 @@ REVOKE EXECUTE ON FUNCTION public.confirm_paid_order(text, jsonb)
   FROM PUBLIC, anon, authenticated;
 GRANT EXECUTE ON FUNCTION public.confirm_paid_order(text, jsonb)
   TO service_role;
+
+
+NOTIFY pgrst, 'reload schema';
