@@ -872,15 +872,24 @@ window.orSortProducts=function(mode){shopSort=mode;renderShop();};
 </style>
 <script id="orriaNavigationMilestoneScript">
 (function(){
+ function openNavCollection(label,categoryName,query){
+  activeCat=categoryName||"All";
+  go("shop");
+  const search=document.getElementById("search");
+  if(search)search.value=query||"";
+  renderShop();
+  const heading=document.querySelector("#shop h1,#shop .section-title,#shop h2");
+  if(heading)heading.scrollIntoView({behavior:"smooth",block:"start"});
+ }
  const navItems=[
-  ["HOME DECOR",()=>category("Decor")],
-  ["GIFTS",()=>category("Gift Sets")],
-  ["PERSONALISED",()=>category("Personalised")],
-  ["OCCASIONS",()=>{category("Gift Sets");const q=document.getElementById("search");if(q){q.value="birthday";renderShop();}}],
-  ["RECIPIENTS",()=>{category("Personalised");const q=document.getElementById("search");if(q){q.value="keepsake";renderShop();}}],
-  ["RELATIONSHIPS",()=>{category("Gift Sets");const q=document.getElementById("search");if(q){q.value="couple";renderShop();}}],
-  ["COLLECTIONS",()=>{activeCat="All";go("shop");renderShop();}],
-  ["NEW ARRIVALS",()=>document.getElementById("newArrivalsGrid")?.scrollIntoView({behavior:"smooth",block:"start"})]
+  ["HOME DECOR",()=>openNavCollection("HOME DECOR","Decor","")],
+  ["GIFTS",()=>openNavCollection("GIFTS","Gift Sets","")],
+  ["PERSONALISED",()=>openNavCollection("PERSONALISED","Personalised","")],
+  ["OCCASIONS",()=>openNavCollection("OCCASIONS","All","birthday")],
+  ["RECIPIENTS",()=>openNavCollection("RECIPIENTS","All","keepsake")],
+  ["RELATIONSHIPS",()=>openNavCollection("RELATIONSHIPS","All","couple")],
+  ["COLLECTIONS",()=>openNavCollection("COLLECTIONS","All","")],
+  ["NEW ARRIVALS",()=>{const section=[...document.querySelectorAll("#home .section")].find(el=>/New Arrivals/i.test(el.innerText||""));if(section){section.id="newArrivalsGrid";section.scrollIntoView({behavior:"smooth",block:"start"});}else openNavCollection("NEW ARRIVALS","All","");}]
  ];
  function install(){
   const nav=document.querySelector("header .navlinks");
