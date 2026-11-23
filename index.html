@@ -138,6 +138,76 @@ footer{background:var(--dark);color:#eee;padding:60px 24px}.foot{max-width:1250p
 .orCatCard{position:relative;overflow:hidden;border-radius:2px;min-height:320px;cursor:pointer;background:#e8dfd4;border:1px solid #d8cabc}.orCatCard img{width:100%;height:320px;object-fit:cover;display:block;transition:transform .6s ease}.orCatCard:hover img{transform:scale(1.04)}.orCatBody{position:absolute;left:0;right:0;bottom:0;padding:22px;color:#fff;background:linear-gradient(transparent,rgba(35,25,18,.78))}.orCatBody h3{margin:0 0 4px;font-size:24px}.orCatBody .muted{color:#f8f2eb}.orTrustStrip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#d9cbbc;margin:55px 0 0;border:1px solid #d9cbbc}.orTrustStrip>div{background:#f6f1ea;padding:22px 18px;text-align:center}.orTrustStrip strong{display:block;font-size:11px;letter-spacing:.16em}.orTrustStrip span{display:block;color:#75685e;font-size:13px;margin-top:7px}.orFeatureSection{padding-top:72px}.orImageGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.orImageTile{position:relative;overflow:hidden;min-height:260px;background:#ddd1c5}.orImageTile.tall{min-height:360px}.orImageTile img{width:100%;height:100%;min-height:260px;object-fit:cover;display:block}.orImageTile span{position:absolute;left:14px;bottom:14px;color:#fff;font-size:13px;letter-spacing:.06em;background:#2b211b99;padding:7px 10px}.orOffer{margin:65px 0;padding:55px 6%;background:#2e231c;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:30px}.orOffer h2{font-size:42px;margin:8px 0 10px}.orOffer p{font-size:18px;margin:0 0 6px}.orOffer small{color:#d8cabc}.orWhyGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.orWhyGrid article{padding:28px;border:1px solid #ddd2c6;background:#f8f4ee;min-height:190px}.orWhyGrid b{font-size:12px;letter-spacing:.16em;color:#927c69}.orWhyGrid h3{margin:25px 0 10px;font-size:20px}.orWhyGrid p{color:#74685f;line-height:1.65;margin:0}.orGiftGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.orGiftGrid>div{background:#f3eee7;cursor:pointer;transition:transform .25s}.orGiftGrid>div:hover{transform:translateY(-3px)}.orGiftGrid img{width:100%;height:250px;object-fit:cover;display:block}.orGiftGrid h3{padding:14px 15px;margin:0;font-size:17px}.orReviewGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.orReviewGrid article{border:1px solid #ddd2c6;padding:28px;background:#fbf8f3}.stars{letter-spacing:.2em;font-size:13px;margin-bottom:18px}.orReviewGrid p{line-height:1.7;color:#62574f;min-height:82px}.orReviewGrid strong{font-size:12px;letter-spacing:.08em}.orShowGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.orShowGrid img{width:100%;height:300px;object-fit:cover;display:block}.orFinalCta{text-align:center;margin:60px 0 20px;padding:75px 20px;background:#eee5da}.orFinalCta h2{font-size:46px;line-height:1.08;margin:10px 0 25px}.orFinalCta .eyebrow{color:#8b7765}.sectionHead p{max-width:650px;line-height:1.65}.btn{transition:transform .2s ease,opacity .2s ease}.btn:hover{transform:translateY(-1px);opacity:.92}@media(max-width:900px){.orTrustStrip{grid-template-columns:repeat(2,1fr)}.orImageGrid,.orGiftGrid,.orShowGrid{grid-template-columns:repeat(2,1fr)}.orWhyGrid,.orReviewGrid{grid-template-columns:repeat(2,1fr)}.orImageTile.tall{min-height:260px}.orOffer{display:block}.orOffer .btn{margin-top:24px}}@media(max-width:560px){.orTrustStrip,.orImageGrid,.orGiftGrid,.orShowGrid,.orWhyGrid,.orReviewGrid{grid-template-columns:1fr}.orImageTile img,.orGiftGrid img{height:270px}.orShowGrid img{height:260px}.orOffer h2{font-size:32px}.orFinalCta h2{font-size:34px}}
 </style>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<style id="orriaVisibleRedesignV1">
+/* Visible storefront redesign: editorial, product-first ORRIA */
+:root{--bg:#f5f0e9;--card:#fffdfa;--ink:#29231e;--muted:#766c62;--line:#dcd1c5;--accent:#9a765c;--dark:#29231e}
+.top{background:#29231e;padding:11px 14px;font-size:10px;letter-spacing:.19em}
+header{background:rgba(248,244,238,.97);box-shadow:0 4px 24px rgba(42,31,23,.045)}
+.nav{max-width:1360px;padding:18px 4.2%;gap:30px}
+.logo{font-size:32px;letter-spacing:.24em}
+.navlinks{gap:26px;font-size:11px;letter-spacing:.14em}
+.navlinks button{font-weight:600}
+.hero{max-width:1360px;min-height:650px;grid-template-columns:1fr 1.08fr;gap:0;padding:26px 4.2% 34px}
+.heroText{padding:78px 7.5% 78px 5%;background:#eee6dc;position:relative;align-items:flex-start}
+.heroText:before{content:"ORRIA STUDIO  /  HOME OBJECTS";font-size:9px;letter-spacing:.22em;color:#8e765f;margin-bottom:28px}
+.hero .eyebrow{font-size:10px;letter-spacing:.24em}
+.hero h1{font-size:clamp(48px,5.2vw,76px);line-height:.99;letter-spacing:-.035em;max-width:570px;margin-bottom:24px}
+.hero p{font-size:15px;line-height:1.9;max-width:420px;margin:0 0 30px}
+.heroImg{min-height:590px;background-position:center;background-size:cover;position:relative}
+.heroImg:after{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.22);pointer-events:none}
+.btn{padding:16px 24px;font-size:10px;letter-spacing:.16em;font-weight:700;border-radius:0}
+.btn.alt{border-color:#a99a8c}
+.section{max-width:1360px;padding:86px 4.2%}
+.sectionHead{margin-bottom:34px}
+.section h2{font-size:clamp(34px,3.2vw,48px);letter-spacing:-.025em}
+.eyebrow{letter-spacing:.22em;font-size:10px}
+.grid{gap:20px}
+.product{border:0;background:transparent}
+.productImg{background:#e9e2d9;aspect-ratio:4/5}
+.pbody{padding:16px 2px}
+.pname{font-size:19px}
+.price{font-size:14px}
+.orCatCard{min-height:360px;border:0}
+.orCatCard img{height:360px;filter:saturate(.84)}
+.orCatBody{padding:26px;background:linear-gradient(transparent,rgba(26,21,17,.76))}
+.orCatBody h3{font-size:30px;letter-spacing:-.02em}
+.orBrandPromise{max-width:1240px;margin:0 auto;padding:26px 4.2%;display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line);gap:20px}
+.orBrandPromise>div{display:grid;grid-template-columns:34px 1fr;column-gap:10px;align-items:center}
+.orBrandPromise span{grid-row:1/3;color:#9a765c;font-size:10px;letter-spacing:.12em}
+.orBrandPromise b{font-family:Georgia,serif;font-size:17px;font-weight:500}
+.orBrandPromise small{color:var(--muted);font-size:11px;margin-top:4px}
+.orUpgradeCard{border:0;background:#eee8e0}
+.orUpgradeCard img{height:260px}
+.orUpgradeCardBody{padding:17px 2px}
+.banner{background:#e9dfd4;padding:82px 24px}
+.banner h2{font-size:clamp(36px,4vw,54px)}
+.orFinalCta{background:#29231e!important;color:#fff;margin:60px 4.2% 20px;padding:95px 20px}
+.orFinalCta .eyebrow{color:#c9a98c!important}
+.orFinalCta h2{font-size:clamp(40px,5vw,64px)}
+footer{background:#29231e}
+@media(max-width:850px){
+ .hero{grid-template-columns:1fr;padding:12px 16px 24px;min-height:0}
+ .heroText{padding:52px 28px 42px}
+ .heroText:before{margin-bottom:20px}
+ .hero h1{font-size:clamp(44px,10vw,60px)}
+ .heroImg{min-height:390px}
+ .orBrandPromise{padding:22px 18px;gap:14px}
+ .orBrandPromise b{font-size:15px}
+ .orCatCard,.orCatCard img{min-height:260px;height:260px}
+}
+@media(max-width:560px){
+ .nav{padding:13px 16px}.logo{font-size:25px}
+ .orBrandPromise{grid-template-columns:1fr;gap:15px}
+ .orBrandPromise>div{grid-template-columns:28px 1fr}
+ .section{padding:58px 16px}
+ .section h2{font-size:34px}
+ .grid{gap:12px}
+ .orCatCard,.orCatCard img{height:225px;min-height:225px}
+ .orCatBody{padding:15px}.orCatBody h3{font-size:23px}
+ .orFinalCta{margin:35px 16px 15px;padding:65px 18px}
+}
+</style>
 </head>
 <body>
 <div class="top">HANDCRAFTED JESMONITE • MADE IN SMALL BATCHES</div>
@@ -166,6 +236,7 @@ footer{background:var(--dark);color:#eee;padding:60px 24px}.foot{max-width:1250p
 <main>
 <section class="page active" id="home">
 <div class="hero"><div class="heroText"><div class="eyebrow">THE ART OF EVERYDAY</div><h1>Objects with a softer point of view.</h1><p>Handcrafted Jesmonite home décor designed to bring quiet character to your everyday spaces.</p><div><button class="btn" onclick="go('shop')">SHOP THE COLLECTION</button></div></div><div class="heroImg"></div></div>
+<div class="orBrandPromise" aria-label="ORRIA brand highlights"><div><span>01</span><b>Hand-finished details</b><small>Each piece finished with care</small></div><div><span>02</span><b>Quiet, considered design</b><small>Made to complement your space</small></div><div><span>03</span><b>Gifting with meaning</b><small>Thoughtful pieces for every moment</small></div></div>
 <section class="section"><div class="sectionHead"><div><div class="eyebrow">CURATED FOR YOU</div><h2>Bestsellers</h2></div><button class="btn alt" onclick="go('shop')">VIEW ALL</button></div><div class="grid" id="homeGrid"></div></section>
 <section class="section"><div class="sectionHead"><div><div class="eyebrow">EXPLORE</div><h2>Shop by category</h2></div></div><div class="categories"><div class="orCatCard" onclick="category('Trays')"><img alt="Trays | ORRIA" src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&amp;fit=crop&amp;w=900&amp;q=85"/><div class="orCatBody"><h3>Trays</h3><span class="muted">For little rituals</span></div></div><div class="orCatCard" onclick="category('Coasters')"><img alt="Coasters | ORRIA" src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&amp;fit=crop&amp;w=900&amp;q=85"/><div class="orCatBody"><h3>Coasters</h3><span class="muted">Set the table softly</span></div></div><div class="orCatCard" onclick="category('Gift Sets')"><img alt="Gift Sets | ORRIA" src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&amp;fit=crop&amp;w=900&amp;q=85"/><div class="orCatBody"><h3>Gift Sets</h3><span class="muted">Made to be remembered</span></div></div><div class="orCatCard" onclick="go('custom')"><img alt="Custom | ORRIA" src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&amp;fit=crop&amp;w=900&amp;q=85"/><div class="orCatBody"><h3>Custom</h3><span class="muted">Made for you</span></div></div></div></section>
 <section class="section"><div class="sectionHead"><div><div class="eyebrow">JUST IN</div><h2>New Arrivals</h2><p class="muted">Fresh forms and finishes for modern spaces.</p></div><button class="btn alt" onclick="go('shop')">SHOP NEW</button></div><div class="orUpgradeGrid" id="newArrivalsGrid"></div></section>
