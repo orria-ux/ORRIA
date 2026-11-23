@@ -855,50 +855,65 @@ window.orSortProducts=function(mode){
 <style id="orriaNavigationMilestone">
 .orUtilityStrip{max-width:1360px;margin:auto;padding:12px 4.2%;display:flex;align-items:center;justify-content:space-between;gap:18px;background:#eee6dc}
 .orUtilityStrip form{display:flex;gap:8px;align-items:center}
-.orUtilityStrip input{width:145px;padding:10px 12px;border:1px solid #cfc2b5;background:#fffdf9}
+.orUtilityStrip input{width:160px;padding:10px 12px;border:1px solid #cfc2b5;background:#fffdf9}
 .orUtilityStrip button{padding:10px 13px;border:1px solid #302921;background:#302921;color:#fff;font-size:10px;letter-spacing:.08em}
 .orPromoStrip{text-align:center;padding:10px 14px;background:#302921;color:#fff;font-size:10px;letter-spacing:.16em}
-.orCategoryRail{max-width:1360px;margin:auto;padding:15px 4.2%;display:flex;gap:10px;overflow-x:auto;scrollbar-width:thin}
+.orCategoryRail{max-width:1360px;margin:auto;padding:15px 4.2%;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
 .orCategoryRail button{flex:0 0 auto;border:1px solid #d8cbbf;background:#fffdf9;padding:10px 16px;font-size:11px;letter-spacing:.08em}
 .orCategoryRail button:hover{background:#302921;color:#fff}
-.navlinks{gap:14px;flex-wrap:nowrap;white-space:nowrap}
-.navlinks button{font-size:10px;letter-spacing:.09em;padding:7px 4px}
-@media(max-width:1100px){.navlinks{gap:8px}.navlinks button{font-size:9px}}
-@media(max-width:850px){.navlinks{display:flex;overflow-x:auto;max-width:100%;padding:0 0 4px;order:3;width:100%;scrollbar-width:none}.navlinks::-webkit-scrollbar{display:none}.nav{flex-wrap:wrap;gap:10px}.actions{margin-left:auto}.orUtilityStrip{padding:12px 16px;align-items:flex-start;flex-direction:column}.orUtilityStrip form{width:100%}.orUtilityStrip input{flex:1;min-width:0;width:auto}.orCategoryRail{padding:12px 16px}}
+.navlinks{gap:12px;flex-wrap:nowrap;white-space:nowrap}
+.navlinks button{font-size:10px;letter-spacing:.08em;padding:7px 3px}
+@media(max-width:1100px){.navlinks{gap:7px}.navlinks button{font-size:9px}}
+@media(max-width:850px){.navlinks{display:flex;overflow-x:auto;max-width:100%;padding:4px 0 8px;order:3;width:100%;scrollbar-width:none}.navlinks::-webkit-scrollbar{display:none}.nav{flex-wrap:wrap;gap:8px}.actions{margin-left:auto}.orUtilityStrip{padding:12px 16px;align-items:flex-start;flex-direction:column}.orUtilityStrip form{width:100%}.orUtilityStrip input{flex:1;min-width:0;width:auto}.orCategoryRail{padding:12px 16px}}
 </style>
 <script id="orriaNavigationMilestoneScript">
 (function(){
- const labels=[
-  ["HOME DECOR",()=>category("Decor")],["GIFTS",()=>category("Gift Sets")],
-  ["PERSONALISED",()=>category("Personalised")],["OCCASIONS",()=>go("shop")],
-  ["RECIPIENTS",()=>go("shop")],["RELATIONSHIPS",()=>category("Gift Sets")],
-  ["COLLECTIONS",()=>go("shop")],["NEW ARRIVALS",()=>document.getElementById("newArrivalsGrid")?.scrollIntoView({behavior:"smooth",block:"center"})]
+ const navItems=[
+  ["HOME DECOR",()=>category("Decor")],
+  ["GIFTS",()=>category("Gift Sets")],
+  ["PERSONALISED",()=>category("Personalised")],
+  ["OCCASIONS",()=>{category("Gift Sets");const q=document.getElementById("search");if(q){q.value="birthday";renderShop();}}],
+  ["RECIPIENTS",()=>{category("Personalised");const q=document.getElementById("search");if(q){q.value="keepsake";renderShop();}}],
+  ["RELATIONSHIPS",()=>{category("Gift Sets");const q=document.getElementById("search");if(q){q.value="couple";renderShop();}}],
+  ["COLLECTIONS",()=>{activeCat="All";go("shop");renderShop();}],
+  ["NEW ARRIVALS",()=>document.getElementById("newArrivalsGrid")?.scrollIntoView({behavior:"smooth",block:"start"})]
  ];
  function install(){
   const nav=document.querySelector("header .navlinks");
-  if(nav){nav.innerHTML=labels.map(([label],i)=>'<button type="button" data-or-nav="'+i+'">'+label+'</button>').join("");
-   nav.querySelectorAll("[data-or-nav]").forEach(b=>b.addEventListener("click",()=>labels[Number(b.dataset.orNav)][1]()));
+  if(nav){
+   nav.innerHTML=navItems.map(([label],i)=>'<button type="button" data-or-nav="'+i+'">'+label+'</button>').join("");
+   nav.querySelectorAll("[data-or-nav]").forEach(b=>b.addEventListener("click",()=>navItems[Number(b.dataset.orNav)][1]()));
   }
   const home=document.getElementById("home");
-  if(!home||document.getElementById("orUtilityStrip"))return;
-  const utility=document.createElement("div");utility.id="orUtilityStrip";utility.className="orUtilityStrip";
-  utility.innerHTML='<div><b>DELIVERY CHECK</b><div style="font-size:11px;color:#766c62;margin-top:4px">Enter your PIN to check delivery at checkout</div></div><form id="orPinForm"><input id="orDeliveryPin" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="6-digit PIN code" aria-label="6-digit PIN code" required><button type="submit">CHECK PIN</button></form>';
-  const promo=document.createElement("div");promo.className="orPromoStrip";promo.textContent="SMALL-BATCH JESMONITE · HAND-FINISHED PIECES · THOUGHTFUL GIFTING";
-  const rail=document.createElement("nav");rail.className="orCategoryRail";rail.setAttribute("aria-label","Shop product categories");
-  rail.innerHTML=[["TRAYS","Trays"],["COASTERS","Coasters"],["DISHES","Dishes"],["DECOR","Decor"],["GIFT SETS","Gift Sets"],["PERSONALISED","Personalised"]].map(x=>'<button type="button" data-cat="'+x[1]+'">'+x[0]+'</button>').join("");
-  home.insertBefore(utility,home.firstChild);home.insertBefore(promo,utility.nextSibling);home.insertBefore(rail,promo.nextSibling);
-  rail.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>category(b.dataset.cat)));
-  document.getElementById("orPinForm").addEventListener("submit",e=>{e.preventDefault();const pin=document.getElementById("orDeliveryPin").value.trim();if(!/^[0-9]{6}$/.test(pin)){alert("Enter a valid 6-digit PIN code.");return}alert("PIN saved for this visit. Final delivery availability and ETA will be confirmed for the selected products at checkout.");});
-  const sectionHeads=[...home.querySelectorAll(":scope > .section")];
-  const best=sectionHeads.find(s=>/Bestsellers/i.test(s.innerText));
-  const newArr=sectionHeads.find(s=>/New Arrivals/i.test(s.innerText));
-  const categorySection=sectionHeads.find(s=>/Shop by category/i.test(s.innerText));
-  const sets=sectionHeads.find(s=>/Build Your ORRIA Set/i.test(s.innerText));
-  const promise=home.querySelector(".orBrandPromise");
+  if(!home)return;
+  if(!document.getElementById("orUtilityStrip")){
+   const utility=document.createElement("div");utility.id="orUtilityStrip";utility.className="orUtilityStrip";
+   utility.innerHTML='<div><b>DELIVERY PIN</b><div id="orPinStatus" style="font-size:11px;color:#766c62;margin-top:4px">Add your PIN to carry it into checkout</div></div><form id="orPinForm"><input id="orDeliveryPin" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="6-digit PIN code" aria-label="6-digit PIN code" required><button type="submit">SAVE PIN</button></form>';
+   const promo=document.createElement("div");promo.className="orPromoStrip";promo.textContent="SMALL-BATCH JESMONITE · HAND-FINISHED PIECES · THOUGHTFUL GIFTING";
+   const rail=document.createElement("nav");rail.className="orCategoryRail";rail.setAttribute("aria-label","Shop product categories");
+   rail.innerHTML=[["TRAYS","Trays"],["COASTERS","Coasters"],["DISHES","Dishes"],["DECOR","Decor"],["GIFT SETS","Gift Sets"],["PERSONALISED","Personalised"]].map(x=>'<button type="button" data-cat="'+x[1]+'">'+x[0]+'</button>').join("");
+   const hero=home.querySelector(".hero");
+   home.insertBefore(utility,hero||home.firstChild);utility.after(promo);promo.after(rail);
+   rail.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>category(b.dataset.cat)));
+   const saved=localStorage.getItem("orria_delivery_pin")||"";
+   if(saved){document.getElementById("orDeliveryPin").value=saved;document.getElementById("orPinStatus").textContent="PIN "+saved+" saved for checkout";}
+   document.getElementById("orPinForm").addEventListener("submit",e=>{
+    e.preventDefault();const pin=document.getElementById("orDeliveryPin").value.trim();
+    if(!/^[0-9]{6}$/.test(pin)){document.getElementById("orPinStatus").textContent="Enter a valid 6-digit PIN.";return;}
+    localStorage.setItem("orria_delivery_pin",pin);document.getElementById("orPinStatus").textContent="PIN "+pin+" saved. Serviceability will be checked during checkout.";
+   });
+  }
   const hero=home.querySelector(".hero");
-  if(categorySection&&newArr&&hero){home.insertBefore(categorySection,newArr);if(best)home.insertBefore(best,newArr);if(promise)home.insertBefore(promise,categorySection);}
-  if(newArr&&best){home.insertBefore(newArr,best);}
-  if(sets&&newArr){sets.after(newArr.nextElementSibling||sets);}
+  const sections=[...home.querySelectorAll(":scope > .section")];
+  const byText=(re)=>sections.find(s=>re.test(s.innerText||""));
+  const categorySection=byText(/Shop by category/i),newArr=byText(/New Arrivals/i),best=byText(/Bestsellers/i),sets=byText(/Build Your ORRIA Set/i);
+  const promise=home.querySelector(".orBrandPromise");
+  if(hero&&promise)hero.after(promise);
+  if(promise&&categorySection)promise.after(categorySection);
+  let anchor=categorySection||promise||hero;
+  if(anchor&&newArr){anchor.after(newArr);anchor=newArr;}
+  if(anchor&&best){anchor.after(best);anchor=best;}
+  if(sets&&anchor&&sets!==anchor)anchor.after(sets);
  }
  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install);else install();
 })();
