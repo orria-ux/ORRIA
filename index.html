@@ -625,7 +625,7 @@ window.orriaPlaceOrder=async()=>{
  const items=store.cart.map(x=>({id:x.id,qty:Number(x.qty),variant:x.variant||"Standard",personal:x.personal||""}));
  const orderNumber="ORR-"+Date.now().toString().slice(-10);
  const subtotal=items.reduce((sum,x)=>{const p=find(x.id);return sum+(p?price(p)*x.qty:0)},0);
- const discount=store.coupon===150?150:0;
+ const discount=Math.max(0,Number(store.coupon||0));
  const discounted=Math.max(0,subtotal-discount);
  const shipping=discounted>=1999?0:99;
  const total=Math.round(discounted+shipping);
