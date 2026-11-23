@@ -73,4 +73,117 @@ async function orders(){const {data,error}=await sb.from("orders").select("id,or
 async function saveOrderStatus(id){const status=$("status-"+id).value;const {error}=await sb.from("orders").update({status,updated_at:new Date().toISOString()}).eq("id",id);if(error)alert(error.message);else alert("Order status updated.")}
 async function coupons(){const {data,error}=await sb.from("coupons").select("*").order("created_at",{ascending:false});if(error){$("view").innerHTML='<div class="panel">'+esc(error.message)+'</div>';return}$("view").innerHTML=welcome("Coupons & offers","Manage coupon codes and their validity.")+'<div class="panel"><div class="panel-head"><h2>Current coupons</h2></div><div class="table-wrap"><table><thead><tr><th>Code</th><th>Minimum order</th><th>Discount</th><th>Validity</th><th>Status</th></tr></thead><tbody>'+(data||[]).map(c=>'<tr><td><b>'+esc(c.code)+'</b></td><td>'+money(c.minimum_order)+'</td><td>'+money(c.discount_amount)+'</td><td>'+(c.starts_at?new Date(c.starts_at).toLocaleDateString("en-IN"):"Anytime")+' – '+(c.ends_at?new Date(c.ends_at).toLocaleDateString("en-IN"):"No end date")+'</td><td><span class="pill '+(c.active?"green":"red")+'">'+(c.active?"Active":"Disabled")+'</span></td></tr>').join("")+'</tbody></table></div><div class="notice">Coupon create/edit is not enabled in this redesign yet. The existing coupon schema is preserved; server-side checkout validation still needs to be implemented before offers are treated as secure.</div></div>'}
 boot();
-</script></body></html>
+</script>
+<style>
+.upload-box{border:1px dashed #cdb9a8;border-radius:12px;padding:15px;background:#fbf8f4}
+.analytics-bars{height:142px;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;align-items:end}
+.analytics-day{height:100%;display:flex;flex-direction:column;justify-content:end;align-items:center;gap:8px}
+.analytics-bar{width:100%;max-width:42px;background:linear-gradient(180deg,#c79c80,#a8795e);border-radius:7px 7px 2px 2px;min-height:4px}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:12px 0 20px}
+.detail-grid p{line-height:1.65;color:var(--muted);overflow-wrap:anywhere}
+@media(max-width:560px){.detail-grid{grid-template-columns:1fr}}
+</style>
+<script>
+(function(){
+  const originalProductForm=window.productForm;
+  window.productForm=async function(id){
+    await originalProductForm(id);
+    const grid=document.querySelector("#productForm .form-grid");
+    if(!grid||document.getElementById("studioImageUpload"))return;
+    const box=document.createElement("div");
+    box.className="field span2 upload-box";box.id="studioImageUpload";
+    box.innerHTML='<label>UPLOAD PRODUCT PHOTOS</label><input id="studioImageFiles" type="file" accept="image/jpeg,image/png,image/webp,image/avif" multiple><div class="muted" style="font-size:11px">JPG, PNG, WEBP or AVIF · Maximum 5 MB per image. Uploaded images are stored in ORRIA Storage.</div><div id="studioUploadStatus" class="msg"></div>';
+    grid.appendChild(box);
+    document.getElementById("studioImageFiles").addEventListener("change",async function(ev){
+      const files=Array.from(ev.target.files||[]),status=document.getElementById("studioUploadStatus");
+      if(!files.length)return;
+      status.className="msg";status.textContent="Uploading "+files.length+" image(s)…";
+      const urls=[];
+      for(const file of files){
+        if(file.size>5242880){status.className="msg bad";status.textContent=file.name+" exceeds the 5 MB limit.";return}
+        if(!["image/jpeg","image/png","image/webp","image/avif"].includes(file.type)){status.className="msg bad";status.textContent="Unsupported image format: "+file.name;return}
+        const ext={"image/jpeg":"jpg","image/png":"png","image/webp":"webp","image/avif":"avif"}[file.type];
+        const folder=id||crypto.randomUUID();
+        const path="products/"+folder+"/"+Date.now()+"-"+crypto.randomUUID()+"."+ext;
+        const result=await sb.storage.from("product-images").upload(path,file,{contentType:file.type,cacheControl:"31536000"});
+        if(result.error){status.className="msg bad";status.textContent="Upload failed: "+result.error.message;return}
+        urls.push(sb.storage.from("product-images").getPublicUrl(path).data.publicUrl);
+      }
+      const main=document.getElementById("pi"),gallery=document.getElementById("pg");
+      if(!main.value.trim()&&urls.length)main.value=urls.shift();
+      if(urls.length)gallery.value=[gallery.value.trim(),...urls].filter(Boolean).join("\n");
+      if(typeof preview==="function")preview();
+      document.getElementById("pi").dispatchEvent(new Event("input"));
+      document.getElementById("pg").dispatchEvent(new Event("input"));
+      status.className="msg ok";status.textContent="Photo upload complete. Click Save product to attach these images.";
+      ev.target.value="";
+    });
+  };
+
+  const originalOrders=window.orders;
+  window.orders=async function(){
+    await originalOrders();
+    document.querySelectorAll('#view select[id^="status-"]').forEach(sel=>{
+      const id=sel.id.slice(7),cell=sel.closest("td");
+      if(cell&&!cell.querySelector(".order-details-btn")){
+        const b=document.createElement("button");b.className="btn soft small order-details-btn";b.textContent="Details";b.style.marginLeft="6px";
+        b.addEventListener("click",()=>window.orderDetails(id));cell.appendChild(b);
+      }
+    });
+  };
+  window.orderDetails=async function(id){
+    const [ord,lines]=await Promise.all([
+      sb.from("orders").select("*").eq("id",id).single(),
+      sb.from("order_items").select("*").eq("order_id",id)
+    ]);
+    if(ord.error||lines.error){alert((ord.error||lines.error).message);return}
+    const o=ord.data,a=o.address_snapshot||{};
+    const address=o.delivery_address||[a.address,a.city,a.state,a.pincode].filter(Boolean).join(", ")||"Address not available";
+    const rows=(lines.data||[]).map(x=>'<tr><td>'+esc(x.product_name)+'</td><td>'+Number(x.quantity)+'</td><td>'+money(x.price)+'</td><td>'+money(x.line_total)+'</td></tr>').join("");
+    const panel=document.createElement("div");panel.className="panel";panel.id="orderDetailsPanel";
+    panel.innerHTML='<div class="panel-head"><h2>Order details · '+esc(o.order_number||String(o.id).slice(0,8))+'</h2><button class="btn light small" id="closeOrderDetails">Close</button></div><div class="detail-grid"><div><b>Customer</b><p>'+esc(o.customer_name)+'<br>'+esc(o.phone)+'<br>'+esc(o.email||"")+'</p></div><div><b>Delivery address</b><p>'+esc(address)+'</p></div><div><b>Payment</b><p>'+esc(o.payment_status)+'<br>'+esc(o.razorpay_order_id||"No Razorpay order ID")+'</p></div><div><b>Order totals</b><p>Subtotal: '+money(o.subtotal)+'<br>Discount: '+money(o.discount)+'<br>Shipping: '+money(o.shipping)+'<br><b>Total: '+money(o.total)+'</b></p></div></div><div class="table-wrap"><table><thead><tr><th>Item</th><th>Qty</th><th>Unit price</th><th>Line total</th></tr></thead><tbody>'+(rows||'<tr><td colspan="4">No line items recorded.</td></tr>')+'</tbody></table></div>';
+    const old=document.getElementById("orderDetailsPanel");if(old)old.remove();
+    document.getElementById("view").prepend(panel);
+    document.getElementById("closeOrderDetails").onclick=()=>panel.remove();
+    panel.scrollIntoView({behavior:"smooth",block:"start"});
+  };
+
+  window.coupons=async function(){
+    const result=await sb.from("coupons").select("*").order("created_at",{ascending:false});
+    if(result.error){$("view").innerHTML='<div class="panel">'+esc(result.error.message)+'</div>';return}
+    const rows=(result.data||[]).map(c=>'<tr><td><b>'+esc(c.code)+'</b></td><td>'+money(c.minimum_order)+'</td><td>'+money(c.discount_amount)+'</td><td>'+(c.starts_at?new Date(c.starts_at).toLocaleDateString("en-IN"):"Anytime")+' – '+(c.ends_at?new Date(c.ends_at).toLocaleDateString("en-IN"):"No end date")+'</td><td><span class="pill '+(c.active?"green":"red")+'">'+(c.active?"Active":"Disabled")+'</span></td><td><button class="btn light small" data-coupon="'+c.id+'" data-active="'+(!c.active)+'">'+(c.active?"Disable":"Enable")+'</button></td></tr>').join("");
+    $("view").innerHTML=welcome("Coupons & offers","Create discount codes and manage their active status.")+
+      '<div class="panel"><div class="panel-head"><h2>Create coupon</h2></div><form id="studioCouponForm"><div class="form-grid"><div class="field"><label>COUPON CODE</label><input id="studioCouponCode" required maxlength="32" placeholder="WELCOME10"></div><div class="field"><label>DISCOUNT AMOUNT (₹)</label><input id="studioCouponDiscount" type="number" min="1" step="1" required></div><div class="field"><label>MINIMUM ORDER (₹)</label><input id="studioCouponMinimum" type="number" min="0" step="1" value="0"></div><div class="field"><label>STARTS AT</label><input id="studioCouponStart" type="datetime-local"></div><div class="field"><label>ENDS AT</label><input id="studioCouponEnd" type="datetime-local"></div><div class="field"><label>STATUS</label><select id="studioCouponActive"><option value="true">Active</option><option value="false">Disabled</option></select></div></div><div class="form-actions"><button class="btn" type="submit">Create coupon</button></div><div id="studioCouponMessage" class="msg"></div></form></div>'+
+      '<div class="panel"><div class="panel-head"><h2>Current coupons</h2></div><div class="table-wrap"><table><thead><tr><th>Code</th><th>Minimum order</th><th>Discount</th><th>Validity</th><th>Status</th><th></th></tr></thead><tbody>'+(rows||'<tr><td colspan="6">No coupons created yet.</td></tr>')+'</tbody></table></div><div class="notice">Important: coupon administration is connected to the database. Do not advertise a coupon as redeemable until checkout performs server-side validation and recalculates the discount.</div></div>';
+    document.getElementById("studioCouponForm").onsubmit=async function(e){
+      e.preventDefault();const msg=document.getElementById("studioCouponMessage");
+      const code=document.getElementById("studioCouponCode").value.trim().toUpperCase();
+      const discount=Number(document.getElementById("studioCouponDiscount").value),minimum=Number(document.getElementById("studioCouponMinimum").value||0);
+      const start=document.getElementById("studioCouponStart").value,end=document.getElementById("studioCouponEnd").value;
+      if(discount<=0||minimum<0){msg.className="msg bad";msg.textContent="Enter valid amounts.";return}
+      if(start&&end&&new Date(end)<=new Date(start)){msg.className="msg bad";msg.textContent="End date must be after start date.";return}
+      const {error}=await sb.from("coupons").insert({code,discount_amount:discount,minimum_order:minimum,active:document.getElementById("studioCouponActive").value==="true",starts_at:start?new Date(start).toISOString():null,ends_at:end?new Date(end).toISOString():null});
+      if(error){msg.className="msg bad";msg.textContent=error.message;return}
+      window.coupons();
+    };
+    document.querySelectorAll("[data-coupon]").forEach(btn=>btn.addEventListener("click",async()=>{
+      const {error}=await sb.from("coupons").update({active:btn.dataset.active==="true"}).eq("id",btn.dataset.coupon);
+      if(error)alert(error.message);else window.coupons();
+    }));
+  };
+
+  const originalOverview=window.overview;
+  window.overview=async function(){
+    await originalOverview();
+    const {data,error}=await sb.from("orders").select("created_at").order("created_at",{ascending:false}).limit(100);
+    if(error)return;
+    const now=new Date(),days=Array.from({length:7},(_,i)=>{const d=new Date(now);d.setDate(d.getDate()-(6-i));return d});
+    const counts=days.map(d=>(data||[]).filter(o=>new Date(o.created_at).toDateString()===d.toDateString()).length);
+    const max=Math.max(1,...counts);
+    const panel=document.createElement("div");panel.className="panel";
+    panel.innerHTML='<div class="panel-head"><h2>Order activity</h2><span class="muted">Last 7 days · latest 100 orders</span></div><div class="analytics-bars">'+days.map((d,i)=>'<div class="analytics-day"><b style="font-size:11px">'+counts[i]+'</b><div class="analytics-bar" style="height:'+Math.max(4,counts[i]/max*82)+'px"></div><span class="muted" style="font-size:10px">'+d.toLocaleDateString("en-IN",{weekday:"short"})+'</span></div>').join("")+'</div>';
+    const stats=document.querySelector("#view .stats");if(stats)stats.after(panel);
+  };
+})();
+</script>
+</body></html>
