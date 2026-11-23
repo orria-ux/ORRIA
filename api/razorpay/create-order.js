@@ -83,13 +83,22 @@ module.exports = async function handler(req, res) {
     }
 
     subtotal = Math.round(subtotal * 100) / 100;
-    const discount = couponCode === 'ORRIA150' && subtotal >= 2999 ? 150 : 0;
+    let discount = 0;
+    if (couponCode) {
+      const matches = await supabase(`coupons?select=code,discount_amount,minimum_order,active,starts_at,ends_at&code=eq.${encodeURIComponent(couponCode)}&active=eq.true&limit=1`);
+      const coupon = matches[0];
+      const now = Date.now();
+      if (!coupon) return json(res, 400, { error: 'This coupon is invalid or inactive.' });
+      if (coupon.starts_at && new Date(coupon.starts_at).getTime() > now) return json(res, 400, { error: 'This coupon is not active yet.' });
+      if (coupon.ends_at && new Date(coupon.ends_at).getTime() < now) return json(res, 400, { error: 'This coupon has expired.' });
+      if (subtotal < Number(coupon.minimum_order)) return json(res, 400, { error: `Minimum order for this coupon is ₹${Number(coupon.minimum_order).toLocaleString('en-IN')}.` });
+      const configuredDiscount = Number(coupon.discount_amount);
+      if (!Number.isFinite(configuredDiscount) || configuredDiscount <= 0) return json(res, 409, { error: 'Coupon discount is not configured correctly.' });
+      discount = Math.min(configuredDiscount, subtotal);
+    }
     const discounted = Math.max(0, subtotal - discount);
     const shipping = discounted >= 1999 ? 0 : 99;
     const total = Math.round((discounted + shipping) * 100) / 100;
-    if (!Number.isInteger(Number(body.amount)) || Number(body.amount) !== total) {
-      return json(res, 409, { error: 'Order total changed. Please refresh checkout and try again.' });
-    }
 
     const orderResponse = await fetch(`${RAZORPAY_BASE}/orders`, {
       method: 'POST',
@@ -112,7 +121,7 @@ module.exports = async function handler(req, res) {
       phone: String(customer.phone),
       email: safeText(customer.email, 254) || null,
       delivery_address: address,
-      address_snapshot: { address, pin },
+      address_snapshot: { address, pin, coupon_code: couponCode || null },
       subtotal,
       discount,
       shipping,
