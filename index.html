@@ -270,7 +270,7 @@ function variantsFor(p){const map={"Trays":["Sand","Ivory","Terracotta","Marble 
 function chooseVariant(v){selectedVariant=String(v||"");document.querySelectorAll("#variantOptions .variantBtn").forEach(b=>b.classList.toggle("active",b.dataset.variant===selectedVariant));}
 
 
-function makeGallery(p){currentGallery=[p.img].filter(Boolean)}
+function makeGallery(p){currentGallery=[...new Set([...(Array.isArray(p.gallery)?p.gallery:[]),p.img].filter(Boolean))]}
 function setDetailImage(i){if(!currentGallery[i])return;document.getElementById("detailImage").src=currentGallery[i];document.querySelectorAll(".thumb").forEach((x,j)=>x.classList.toggle("active",j===i))}
 
 const money=n=>"₹"+n.toLocaleString("en-IN");
@@ -428,6 +428,10 @@ async function loadProductsFromSupabase(){
     if(error) throw error;
     const cats={};
     const {data:catData,error:catError}=await ORRIA_SB.from('categories').select('id,name');
+    const {data:imageRows,error:imageError}=await ORRIA_SB.from('product_images').select('product_id,image_url,sort_order').order('sort_order',{ascending:true});
+    if(imageError) console.warn('ORRIA: product gallery load failed',imageError);
+    const galleryByProduct={};
+    (imageRows||[]).forEach(row=>{(galleryByProduct[row.product_id]||(galleryByProduct[row.product_id]=[])).push(row.image_url)});
     if(catError) console.warn("ORRIA: categories load failed",catError);
     (catData||[]).forEach(c=>cats[c.id]=c.name);
     if(Array.isArray(data)){
@@ -438,7 +442,7 @@ async function loadProductsFromSupabase(){
         return {
           id:p.id,name:p.name,category:cats[p.category_id]||local.category||'Decor',cat:cats[p.category_id]||local.cat||'Decor',
           price:Number(p.price)||0,mrp:Number(p.mrp)||Number(p.price)||0,img:p.image_url||local.img||'',
-          desc:richDesc,stock:Number(p.stock)||0,tag:'ORRIA',
+          gallery:galleryByProduct[p.id]||[],desc:richDesc,stock:Number(p.stock)||0,tag:'ORRIA',
           size:local.size||'Hand-finished ORRIA piece',
           material:local.material||'Jesmonite, mineral colour pigments and a protective sealer',
           colours:local.colours||'Ivory, Beige, Terracotta',
