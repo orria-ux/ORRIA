@@ -138,6 +138,89 @@ footer{background:var(--dark);color:#eee;padding:60px 24px}.foot{max-width:1250p
 .orCatCard{position:relative;overflow:hidden;border-radius:2px;min-height:320px;cursor:pointer;background:#e8dfd4;border:1px solid #d8cabc}.orCatCard img{width:100%;height:320px;object-fit:cover;display:block;transition:transform .6s ease}.orCatCard:hover img{transform:scale(1.04)}.orCatBody{position:absolute;left:0;right:0;bottom:0;padding:22px;color:#fff;background:linear-gradient(transparent,rgba(35,25,18,.78))}.orCatBody h3{margin:0 0 4px;font-size:24px}.orCatBody .muted{color:#f8f2eb}.orTrustStrip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#d9cbbc;margin:55px 0 0;border:1px solid #d9cbbc}.orTrustStrip>div{background:#f6f1ea;padding:22px 18px;text-align:center}.orTrustStrip strong{display:block;font-size:11px;letter-spacing:.16em}.orTrustStrip span{display:block;color:#75685e;font-size:13px;margin-top:7px}.orFeatureSection{padding-top:72px}.orImageGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.orImageTile{position:relative;overflow:hidden;min-height:260px;background:#ddd1c5}.orImageTile.tall{min-height:360px}.orImageTile img{width:100%;height:100%;min-height:260px;object-fit:cover;display:block}.orImageTile span{position:absolute;left:14px;bottom:14px;color:#fff;font-size:13px;letter-spacing:.06em;background:#2b211b99;padding:7px 10px}.orOffer{margin:65px 0;padding:55px 6%;background:#2e231c;color:#fff;display:flex;justify-content:space-between;align-items:center;gap:30px}.orOffer h2{font-size:42px;margin:8px 0 10px}.orOffer p{font-size:18px;margin:0 0 6px}.orOffer small{color:#d8cabc}.orWhyGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.orWhyGrid article{padding:28px;border:1px solid #ddd2c6;background:#f8f4ee;min-height:190px}.orWhyGrid b{font-size:12px;letter-spacing:.16em;color:#927c69}.orWhyGrid h3{margin:25px 0 10px;font-size:20px}.orWhyGrid p{color:#74685f;line-height:1.65;margin:0}.orGiftGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.orGiftGrid>div{background:#f3eee7;cursor:pointer;transition:transform .25s}.orGiftGrid>div:hover{transform:translateY(-3px)}.orGiftGrid img{width:100%;height:250px;object-fit:cover;display:block}.orGiftGrid h3{padding:14px 15px;margin:0;font-size:17px}.orReviewGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.orReviewGrid article{border:1px solid #ddd2c6;padding:28px;background:#fbf8f3}.stars{letter-spacing:.2em;font-size:13px;margin-bottom:18px}.orReviewGrid p{line-height:1.7;color:#62574f;min-height:82px}.orReviewGrid strong{font-size:12px;letter-spacing:.08em}.orShowGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.orShowGrid img{width:100%;height:300px;object-fit:cover;display:block}.orFinalCta{text-align:center;margin:60px 0 20px;padding:75px 20px;background:#eee5da}.orFinalCta h2{font-size:46px;line-height:1.08;margin:10px 0 25px}.orFinalCta .eyebrow{color:#8b7765}.sectionHead p{max-width:650px;line-height:1.65}.btn{transition:transform .2s ease,opacity .2s ease}.btn:hover{transform:translateY(-1px);opacity:.92}@media(max-width:900px){.orTrustStrip{grid-template-columns:repeat(2,1fr)}.orImageGrid,.orGiftGrid,.orShowGrid{grid-template-columns:repeat(2,1fr)}.orWhyGrid,.orReviewGrid{grid-template-columns:repeat(2,1fr)}.orImageTile.tall{min-height:260px}.orOffer{display:block}.orOffer .btn{margin-top:24px}}@media(max-width:560px){.orTrustStrip,.orImageGrid,.orGiftGrid,.orShowGrid,.orWhyGrid,.orReviewGrid{grid-template-columns:1fr}.orImageTile img,.orGiftGrid img{height:270px}.orShowGrid img{height:260px}.orOffer h2{font-size:32px}.orFinalCta h2{font-size:34px}}
 </style>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<style id="orriaVisibleRedesignV1">
+/* Visible storefront redesign: editorial, product-first ORRIA */
+:root{--bg:#f5f0e9;--card:#fffdfa;--ink:#29231e;--muted:#766c62;--line:#dcd1c5;--accent:#9a765c;--dark:#29231e}
+.top{background:#29231e;padding:11px 14px;font-size:10px;letter-spacing:.19em}
+header{background:rgba(248,244,238,.97);box-shadow:0 4px 24px rgba(42,31,23,.045)}
+.nav{max-width:1360px;padding:18px 4.2%;gap:30px}
+.logo{font-size:32px;letter-spacing:.24em}
+.navlinks{gap:26px;font-size:11px;letter-spacing:.14em}
+.navlinks button{font-weight:600}
+.hero{max-width:1360px;min-height:650px;grid-template-columns:1fr 1.08fr;gap:0;padding:26px 4.2% 34px}
+.heroText{padding:78px 7.5% 78px 5%;background:#eee6dc;position:relative;align-items:flex-start}
+.heroText:before{content:"ORRIA STUDIO  /  HOME OBJECTS";font-size:9px;letter-spacing:.22em;color:#8e765f;margin-bottom:28px}
+.hero .eyebrow{font-size:10px;letter-spacing:.24em}
+.hero h1{font-size:clamp(48px,5.2vw,76px);line-height:.99;letter-spacing:-.035em;max-width:570px;margin-bottom:24px}
+.hero p{font-size:15px;line-height:1.9;max-width:420px;margin:0 0 30px}
+.heroImg{min-height:590px;background-position:center;background-size:cover;position:relative}
+.heroImg:after{content:"";position:absolute;inset:0;border:1px solid rgba(255,255,255,.22);pointer-events:none}
+.btn{padding:16px 24px;font-size:10px;letter-spacing:.16em;font-weight:700;border-radius:0}
+.btn.alt{border-color:#a99a8c}
+.section{max-width:1360px;padding:86px 4.2%}
+.sectionHead{margin-bottom:34px}
+.section h2{font-size:clamp(34px,3.2vw,48px);letter-spacing:-.025em}
+.eyebrow{letter-spacing:.22em;font-size:10px}
+.grid{gap:20px}
+.product{border:0;background:transparent}
+.productImg{background:#e9e2d9;aspect-ratio:4/5}
+.pbody{padding:16px 2px}
+.pname{font-size:19px}
+.price{font-size:14px}
+.orCatCard{min-height:360px;border:0}
+.orCatCard img{height:360px;filter:saturate(.84)}
+.orCatBody{padding:26px;background:linear-gradient(transparent,rgba(26,21,17,.76))}
+.orCatBody h3{font-size:30px;letter-spacing:-.02em}
+.orBrandPromise{max-width:1240px;margin:0 auto;padding:26px 4.2%;display:grid;grid-template-columns:repeat(3,1fr);border-bottom:1px solid var(--line);gap:20px}
+.orBrandPromise>div{display:grid;grid-template-columns:34px 1fr;column-gap:10px;align-items:center}
+.orBrandPromise span{grid-row:1/3;color:#9a765c;font-size:10px;letter-spacing:.12em}
+.orBrandPromise b{font-family:Georgia,serif;font-size:17px;font-weight:500}
+.orBrandPromise small{color:var(--muted);font-size:11px;margin-top:4px}
+.orUpgradeCard{border:0;background:#eee8e0}
+.orUpgradeCard img{height:260px}
+.orUpgradeCardBody{padding:17px 2px}
+.banner{background:#e9dfd4;padding:82px 24px}
+.banner h2{font-size:clamp(36px,4vw,54px)}
+.orFinalCta{background:#29231e!important;color:#fff;margin:60px 4.2% 20px;padding:95px 20px}
+.orFinalCta .eyebrow{color:#c9a98c!important}
+.orFinalCta h2{font-size:clamp(40px,5vw,64px)}
+footer{background:#29231e}
+@media(max-width:850px){
+ .hero{grid-template-columns:1fr;padding:12px 16px 24px;min-height:0}
+ .heroText{padding:52px 28px 42px}
+ .heroText:before{margin-bottom:20px}
+ .hero h1{font-size:clamp(44px,10vw,60px)}
+ .heroImg{min-height:390px}
+ .orBrandPromise{padding:22px 18px;gap:14px}
+ .orBrandPromise b{font-size:15px}
+ .orCatCard,.orCatCard img{min-height:260px;height:260px}
+}
+@media(max-width:560px){
+ .nav{padding:13px 16px}.logo{font-size:25px}
+ .orBrandPromise{grid-template-columns:1fr;gap:15px}
+ .orBrandPromise>div{grid-template-columns:28px 1fr}
+ .section{padding:58px 16px}
+ .section h2{font-size:34px}
+ .grid{gap:12px}
+ .orCatCard,.orCatCard img{height:225px;min-height:225px}
+ .orCatBody{padding:15px}.orCatBody h3{font-size:23px}
+ .orFinalCta{margin:35px 16px 15px;padding:65px 18px}
+}
+</style>
+<style id="orriaProductDiscoveryUpgrade">
+.orDiscount{display:inline-block;margin-left:7px;color:#8c5c43;font-size:11px;font-weight:700;letter-spacing:.04em}
+.orStock{font-size:11px;margin-top:10px!important;color:#71665d}
+.cardActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}
+.cardActions .viewProduct,.cardActions .orAddBag{min-width:0;width:100%;margin:0;padding:12px 8px;font-size:10px;letter-spacing:.08em}
+.orAddBag:disabled{opacity:.45;cursor:not-allowed}
+.orriaWish{border:1px solid #d8cec3!important;box-shadow:0 3px 12px #0000000b}
+.orProductAvailability{display:inline-block;margin:12px 0;padding:8px 12px;border:1px solid var(--line);font-size:11px;letter-spacing:.06em}
+#shop .shopHead{padding-bottom:12px}
+#shop .orSort{border:1px solid var(--line);background:#fffdf9;padding:12px 14px;margin:12px 0}
+#shopResultCount{font-size:12px;color:var(--muted)}
+@media(max-width:600px){.cardActions{grid-template-columns:1fr}.cardActions .viewProduct,.cardActions .orAddBag{padding:13px}.productImg{aspect-ratio:4/5}}
+</style>
 </head>
 <body>
 <div class="top">HANDCRAFTED JESMONITE • MADE IN SMALL BATCHES</div>
@@ -166,6 +249,7 @@ footer{background:var(--dark);color:#eee;padding:60px 24px}.foot{max-width:1250p
 <main>
 <section class="page active" id="home">
 <div class="hero"><div class="heroText"><div class="eyebrow">THE ART OF EVERYDAY</div><h1>Objects with a softer point of view.</h1><p>Handcrafted Jesmonite home décor designed to bring quiet character to your everyday spaces.</p><div><button class="btn" onclick="go('shop')">SHOP THE COLLECTION</button></div></div><div class="heroImg"></div></div>
+<div class="orBrandPromise" aria-label="ORRIA brand highlights"><div><span>01</span><b>Hand-finished details</b><small>Each piece finished with care</small></div><div><span>02</span><b>Quiet, considered design</b><small>Made to complement your space</small></div><div><span>03</span><b>Gifting with meaning</b><small>Thoughtful pieces for every moment</small></div></div>
 <section class="section"><div class="sectionHead"><div><div class="eyebrow">CURATED FOR YOU</div><h2>Bestsellers</h2></div><button class="btn alt" onclick="go('shop')">VIEW ALL</button></div><div class="grid" id="homeGrid"></div></section>
 <section class="section"><div class="sectionHead"><div><div class="eyebrow">EXPLORE</div><h2>Shop by category</h2></div></div><div class="categories"><div class="orCatCard" onclick="category('Trays')"><img alt="Trays | ORRIA" src="https://images.unsplash.com/photo-1610701596007-11502861dcfa?auto=format&amp;fit=crop&amp;w=900&amp;q=85"/><div class="orCatBody"><h3>Trays</h3><span class="muted">For little rituals</span></div></div><div class="orCatCard" onclick="category('Coasters')"><img alt="Coasters | ORRIA" src="https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&amp;fit=crop&amp;w=900&amp;q=85"/><div class="orCatBody"><h3>Coasters</h3><span class="muted">Set the table softly</span></div></div><div class="orCatCard" onclick="category('Gift Sets')"><img alt="Gift Sets | ORRIA" src="https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&amp;fit=crop&amp;w=900&amp;q=85"/><div class="orCatBody"><h3>Gift Sets</h3><span class="muted">Made to be remembered</span></div></div><div class="orCatCard" onclick="go('custom')"><img alt="Custom | ORRIA" src="https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&amp;fit=crop&amp;w=900&amp;q=85"/><div class="orCatBody"><h3>Custom</h3><span class="muted">Made for you</span></div></div></div></section>
 <section class="section"><div class="sectionHead"><div><div class="eyebrow">JUST IN</div><h2>New Arrivals</h2><p class="muted">Fresh forms and finishes for modern spaces.</p></div><button class="btn alt" onclick="go('shop')">SHOP NEW</button></div><div class="orUpgradeGrid" id="newArrivalsGrid"></div></section>
@@ -230,8 +314,8 @@ footer{background:var(--dark);color:#eee;padding:60px 24px}.foot{max-width:1250p
 </section>
 
 </section>
-<section class="page" id="shop"><div class="eyebrow">24-PIECE COLLECTION</div><div class="shopHead"><div class="eyebrow">ORRIA SHOP</div><h1 style="font-size:50px;margin:5px 0">All Products</h1><p class="muted">Handcrafted pieces for home, desk and gifting.</p><input class="search" id="search" oninput="renderShop()" placeholder="Search trays, coasters, gifts..."><div class="filters" id="filters"></div><select class="orSort" id="orSort" onchange="window.orSortProducts&amp;&amp;window.orSortProducts(this.value)"><option value="featured">Featured</option><option value="priceLow">Price: Low to High</option><option value="priceHigh">Price: High to Low</option><option value="newest">Newest</option></select></input></div><div class="section" style="padding-top:10px"><div class="grid" id="shopGrid"></div></div></section>
-<section class="page" id="product"><div class="productDetail"><div><div class="detailImg"><img alt="" id="detailImage" src=""/></div><div class="thumbs" id="thumbs"></div></div><div class="detail"><div class="eyebrow" id="detailCat"></div><h1 id="detailName"></h1><div class="bigprice" id="detailPrice"></div><p class="muted" id="detailDesc"></p><div class="specs" id="detailSpecs"></div><div class="muted" id="detailMaterialNote" style="line-height:1.7;margin:8px 0 16px"></div><div class="variantBox"><div class="variantTitle">Choose your colour / finish</div><div class="variantOptions" id="variantOptions"></div></div><div style="border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;margin:20px 0"><div class="meta">✓ Handmade in small batches</div><div class="meta">✓ Securely packed for delivery</div><div class="meta">✓ Personalisation available on selected pieces</div></div><label class="muted">Personalisation (optional)</label><input class="personal" id="personal" placeholder="Name / short message"><div class="qty"><button onclick="changeQty(-1)">−</button><strong id="qty">1</strong><button onclick="changeQty(1)">+</button></div><button class="btn" onclick="addCurrent()" style="width:100%">ADD TO CART</button><button class="btn alt" onclick="buyCurrent()" style="width:100%;margin-top:10px">BUY NOW</button></input></div></div></section>
+<section class="page" id="shop"><div class="eyebrow">24-PIECE COLLECTION</div><div class="shopHead"><div class="eyebrow">ORRIA SHOP</div><h1 style="font-size:50px;margin:5px 0">All Products</h1><p class="muted">Handcrafted pieces for home, desk and gifting.</p><input class="search" id="search" oninput="renderShop()" placeholder="Search trays, coasters, gifts..."><div class="filters" id="filters"></div><div id="shopResultCount" aria-live="polite"></div><select class="orSort" id="orSort" onchange="window.orSortProducts&amp;&amp;window.orSortProducts(this.value)"><option value="featured">Featured</option><option value="priceLow">Price: Low to High</option><option value="priceHigh">Price: High to Low</option><option value="newest">Newest</option></select></input></div><div class="section" style="padding-top:10px"><div class="grid" id="shopGrid"></div></div></section>
+<section class="page" id="product"><div class="productDetail"><div><div class="detailImg"><img alt="" id="detailImage" src=""/></div><div class="thumbs" id="thumbs"></div></div><div class="detail"><div class="eyebrow" id="detailCat"></div><h1 id="detailName"></h1><div class="bigprice" id="detailPrice"></div><p class="muted" id="detailDesc"></p><div class="specs" id="detailSpecs"></div><div class="muted" id="detailMaterialNote" style="line-height:1.7;margin:8px 0 16px"></div><div class="variantBox" style="display:none"><div class="variantTitle">Choose your colour / finish</div><div class="variantOptions" id="variantOptions"></div></div><div class="orProductAvailability" id="detailStockNote" aria-live="polite"></div><div style="border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:18px 0;margin:20px 0"><div class="meta">✓ Handmade in small batches</div><div class="meta">✓ Securely packed for delivery</div><div class="meta">✓ Personalisation available on selected pieces</div></div><label class="muted">Personalisation (optional)</label><input class="personal" id="personal" placeholder="Name / short message"><div class="qty"><button onclick="changeQty(-1)">−</button><strong id="qty">1</strong><button onclick="changeQty(1)">+</button></div><button class="btn" onclick="addCurrent()" style="width:100%">ADD TO CART</button><button class="btn alt" onclick="buyCurrent()" style="width:100%;margin-top:10px">BUY NOW</button></input></div></div></section>
 <section class="page" id="track"><div class="trackWrap"><div class="eyebrow">ORDER TRACKING</div><h1 style="font-size:50px;margin:5px 0 12px">Track your order</h1><p class="muted">Enter your ORRIA order number and the mobile number used at checkout.</p><div class="trackForm"><div class="trackGrid"><input autocomplete="off" id="trackOrderNo" placeholder="Order number e.g. ORR-1299076"/><input autocomplete="tel" id="trackPhone" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number"/></div><button class="btn" onclick="trackOrder()" style="width:100%;margin-top:14px">TRACK ORDER</button></div><div class="trackResult" id="trackResult"></div></div></section>
 <section class="page" id="wishlist"><div class="section"><div class="eyebrow">SAVED PIECES</div><h1 style="font-size:50px">Wishlist</h1><div class="grid" id="wishGrid"></div></div></section>
 <section class="page" id="confirmation"><div class="about"><div class="eyebrow">ORDER RECEIVED</div><h1>Thank you for choosing ORRIA.</h1><p class="muted" id="confirmationText">Your order details have been prepared. We will confirm availability, shipping and payment with you shortly.</p><button class="btn" onclick="go('shop')">CONTINUE SHOPPING</button></div></section>
@@ -270,7 +354,7 @@ function variantsFor(p){const map={"Trays":["Sand","Ivory","Terracotta","Marble 
 function chooseVariant(v){selectedVariant=String(v||"");document.querySelectorAll("#variantOptions .variantBtn").forEach(b=>b.classList.toggle("active",b.dataset.variant===selectedVariant));}
 
 
-function makeGallery(p){currentGallery=[p.img].filter(Boolean)}
+function makeGallery(p){currentGallery=[...new Set([...(Array.isArray(p.gallery)?p.gallery:[]),p.img].filter(Boolean))]}
 function setDetailImage(i){if(!currentGallery[i])return;document.getElementById("detailImage").src=currentGallery[i];document.querySelectorAll(".thumb").forEach((x,j)=>x.classList.toggle("active",j===i))}
 
 const money=n=>"₹"+n.toLocaleString("en-IN");
@@ -327,18 +411,19 @@ function initNavigation(){
   history.replaceState({orriaPage:id},"",id==="home"?location.pathname+location.search:location.pathname+location.search+"#"+id);
   showPage(id);
 }
-function productCard(p){const id=String(p.id);const safeId=id.replace(/&/g,"&amp;").replace(/"/g,"&quot;");let wished=wishlist.some(x=>String(x)===id);return `<article class="product" data-product-id="${safeId}" role="button" tabindex="0" onclick="openProductFromCard(this)"><button type="button" class="heart" data-wish-id="${safeId}" onclick="event.stopPropagation();toggleWish(this.getAttribute('data-wish-id'))">${wished?"♥":"♡"}</button><div class="productImg"><img src="${p.img}" alt="${p.name}"></div><div class="pbody"><span class="tag">${p.tag||"ORRIA"}</span><div class="pname">${p.name}</div><div class="meta">${p.cat||p.category||"Decor"} • Handmade</div><div class="price">${money(Number(p.price)||0)} <span class="mrp">${money(Number(p.mrp)||Number(p.price)||0)}</span></div><div class="meta" style="margin-top:8px">● ${Number(p.stock)>0?"In stock":"Out of stock"} • Dispatch in 2–4 working days</div><button type="button" class="btn" style="width:100%;margin-top:13px" onclick="event.stopPropagation();openProductFromCard(this.closest('article.product'))">ADD TO CART</button></div></article>`}
+function productCard(p){const id=String(p.id);const safeId=id.replace(/&/g,"&amp;").replace(/"/g,"&quot;");const wished=wishlist.some(x=>String(x)===id);const price=Number(p.price)||0,mrp=Number(p.mrp)||price,discount=mrp>price?Math.round((mrp-price)*100/mrp):0;const available=Number(p.stock)>0;return `<article class="product" data-product-id="${safeId}" tabindex="0" onclick="openProductFromCard(this)"><button type="button" class="heart orriaWish ${wished?"on":""}" aria-label="${wished?"Remove from wishlist":"Add to wishlist"}" data-wish-id="${safeId}" onclick="event.stopPropagation();toggleWish(this.getAttribute('data-wish-id'))">${wished?"♥":"♡"}</button><div class="productImg"><img loading="lazy" src="${p.img||""}" alt="${p.name}"></div><div class="pbody"><span class="tag">${p.cat||p.category||"Home Décor"}</span><div class="pname">${p.name}</div><div class="price">${money(price)} ${mrp>price?`<span class="mrp">${money(mrp)}</span><span class="orDiscount">${discount}% OFF</span>`:""}</div><div class="meta orStock">${available?"In stock":"Currently unavailable"}</div><div class="cardActions"><button type="button" class="viewProduct" onclick="event.stopPropagation();openProduct('${safeId}')">VIEW DETAILS</button><button type="button" class="btn orAddBag" ${available?"":"disabled"} onclick="event.stopPropagation();quickAdd('${safeId}')">${available?"ADD TO BAG":"SOLD OUT"}</button></div></div></article>`}
 function sendCustom(){const n=document.getElementById("customName")?.value.trim(),c=document.getElementById("customContact")?.value.trim(),m=document.getElementById("customMessage")?.value.trim();if(!n||!c||!m){alert("Please fill your name, contact and custom requirement.");return;}const text=`Hello ORRIA, I have a custom order request.\n\nName: ${n}\nContact: ${c}\nRequirement: ${m}`;window.open("https://wa.me/918299561267?text="+encodeURIComponent(text),"_blank");}
 function renderHome(){document.getElementById("homeGrid").innerHTML=products.slice(0,5).map(productCard).join("")}
 function openProductFromCard(card){if(!card)return;const id=card.getAttribute("data-product-id");if(id)openProduct(id)}
 document.addEventListener("click",function(e){const card=e.target.closest("article.orUpgradeCard[data-product-id]");if(card){e.preventDefault();e.stopImmediatePropagation();const id=card.getAttribute("data-product-id");if(id){if(typeof window.orriaV18Product==="function")window.orriaV18Product(id);else openProductFromCard(card)}}},true);
 document.addEventListener("keydown",function(e){if(e.key!=="Enter"&&e.key!==" ")return;const card=e.target.closest("article.product[data-product-id],article.orUpgradeCard[data-product-id]");if(card&&!e.target.closest("button,input,textarea,select,a")){e.preventDefault();openProductFromCard(card)}},true);
-function renderShop(){let q=(document.getElementById("search")?.value||"").toLowerCase();let list=products.filter(p=>(activeCat==="All"||p.cat===activeCat)&&(`${p.name} ${p.cat}`).toLowerCase().includes(q));document.getElementById("filters").innerHTML=["All","Trays","Coasters","Gift Sets","Dishes","Decor","Personalised"].map(c=>`<button class="chip ${activeCat===c?"active":""}" onclick="activeCat='${c}';renderShop()">${c}</button>`).join("");document.getElementById("shopGrid").innerHTML=list.length?list.map(productCard).join(""):`<div class="empty" style="grid-column:1/-1">No products found.</div>`}
-function openProduct(id){const sid=String(id);current=products.find(p=>String(p.id)===sid);if(!current){console.warn("ORRIA: product not found",id);return;}rememberRecentlyViewed(id);qty=1;go("product");makeGallery(current);document.getElementById("detailImage").src=currentGallery[0];document.getElementById("thumbs").innerHTML=currentGallery.map((im,i)=>`<button class="thumb ${i===0?"active":""}" onclick="setDetailImage(${i})"><img src="${im}" alt="${current.name} view ${i+1}"></button>`).join("");document.getElementById("detailName").textContent=current.name;selectedVariant=variantsFor(current)[0];document.getElementById("variantOptions").innerHTML=variantsFor(current).map(v=>`<button type="button" class="variantBtn ${v===selectedVariant?"active":""}" data-variant="${v}" onclick="chooseVariant(${JSON.stringify(v)})">${v}</button>`).join("");document.getElementById("detailCat").textContent=current.cat;document.getElementById("detailPrice").innerHTML=money(current.price)+" <span class='mrp'>"+money(current.mrp)+"</span>";document.getElementById("detailDesc").textContent=current.desc;document.getElementById("detailSpecs").innerHTML=`<div class="spec"><b>SIZE</b><span>${current.size||"Hand-finished ORRIA piece"}</span></div><div class="spec"><b>MATERIAL</b><span>${current.material||"Jesmonite, mineral colour pigments and a protective sealer"}</span></div><div class="spec"><b>COLOURS</b><span>${current.colours||"Ivory, Beige, Terracotta"}</span></div><div class="spec"><b>CARE</b><span>${current.care||"Wipe gently with a soft dry or slightly damp cloth. Avoid prolonged water exposure, harsh chemicals and abrasive cleaners."}</span></div>`;document.getElementById("detailMaterialNote").textContent="Material: "+(current.material||"Jesmonite, mineral colour pigments and a protective sealer")+". Each piece is individually cast, demoulded, sanded and finished by hand, so subtle variation is part of its character.";document.getElementById("qty").textContent=qty;document.getElementById("personal").value=""}
+let shopSort="featured";window.orSortProducts=function(value){shopSort=value;renderShop()};
+function renderShop(){const q=(document.getElementById("search")?.value||"").trim().toLowerCase();let list=products.filter(p=>(activeCat==="All"||p.cat===activeCat)&&(`${p.name} ${p.cat} ${p.desc||""}`).toLowerCase().includes(q));if(shopSort==="priceLow")list.sort((a,b)=>Number(a.price)-Number(b.price));if(shopSort==="priceHigh")list.sort((a,b)=>Number(b.price)-Number(a.price));if(shopSort==="newest")list=list;document.getElementById("filters").innerHTML=["All","Trays","Coasters","Gift Sets","Dishes","Decor","Personalised"].map(c=>`<button class="chip ${activeCat===c?"active":""}" onclick="activeCat='${c}';renderShop()">${c}</button>`).join("");const count=document.getElementById("shopResultCount");if(count)count.textContent=`${list.length} products`;document.getElementById("shopGrid").innerHTML=list.length?list.map(productCard).join(""):`<div class="empty" style="grid-column:1/-1">No products match this search. Try another term or category.</div>`}
+function openProduct(id){const sid=String(id);current=products.find(p=>String(p.id)===sid);if(!current){console.warn("ORRIA: product not found",id);return;}rememberRecentlyViewed(id);qty=1;go("product");makeGallery(current);document.getElementById("detailImage").src=currentGallery[0];document.getElementById("thumbs").innerHTML=currentGallery.map((im,i)=>`<button class="thumb ${i===0?"active":""}" onclick="setDetailImage(${i})"><img src="${im}" alt="${current.name} view ${i+1}"></button>`).join("");document.getElementById("detailName").textContent=current.name;selectedVariant="";const variantBox=document.querySelector("#product .variantBox");if(variantBox)variantBox.style.display="none";const personalLabel=document.querySelector("#product label[for='personal']")||document.querySelector("#product .detail > label");const personalInput=document.getElementById("personal");const isPersonalised=String(current.cat||"").toLowerCase()==="personalised";if(personalLabel)personalLabel.style.display=isPersonalised?"block":"none";if(personalInput){personalInput.style.display=isPersonalised?"block":"none";personalInput.value="";}document.getElementById("detailCat").textContent=current.cat;const detailPrice=Number(current.price)||0,detailMrp=Number(current.mrp)||detailPrice,detailOff=detailMrp>detailPrice?Math.round((detailMrp-detailPrice)*100/detailMrp):0;document.getElementById("detailPrice").innerHTML=money(detailPrice)+(detailMrp>detailPrice?" <span class='mrp'>"+money(detailMrp)+"</span> <span class='orDiscount'>"+detailOff+"% OFF</span>":"");document.getElementById("detailDesc").textContent=current.desc;document.getElementById("detailSpecs").innerHTML=`<div class="spec"><b>SIZE</b><span>${current.size||"Hand-finished ORRIA piece"}</span></div><div class="spec"><b>MATERIAL</b><span>${current.material||"Jesmonite, mineral colour pigments and a protective sealer"}</span></div><div class="spec"><b>COLOURS</b><span>${current.colours||"Ivory, Beige, Terracotta"}</span></div><div class="spec"><b>CARE</b><span>${current.care||"Wipe gently with a soft dry or slightly damp cloth. Avoid prolonged water exposure, harsh chemicals and abrasive cleaners."}</span></div>`;document.getElementById("detailMaterialNote").textContent="Material: "+(current.material||"Jesmonite, mineral colour pigments and a protective sealer")+". Each piece is individually cast, demoulded, sanded and finished by hand, so subtle variation is part of its character.";const stockNote=document.getElementById("detailStockNote");if(stockNote)stockNote.textContent=Number(current.stock)>0?"In stock":"Currently unavailable";const promise=document.querySelector("#product .detail > div[style*='border-top']");if(promise){promise.children[2].textContent=String(current.cat||"").toLowerCase()==="personalised"?"✓ Personalisation available on this piece":"✓ Product details and care information below";}document.getElementById("qty").textContent=qty;document.getElementById("personal").value=""}
 function changeQty(n){qty=Math.max(1,qty+n);document.getElementById("qty").textContent=qty}
-function addCurrent(){let per=document.getElementById("personal").value.trim();let v=selectedVariant||variantsFor(current)[0];for(let i=0;i<qty;i++)cart.push({id:current.id,name:current.name,price:current.price,qty:1,personal:per,variant:v});save();openCart()}
+function addCurrent(){let per=document.getElementById("personal").value.trim();let v=selectedVariant||"";for(let i=0;i<qty;i++)cart.push({id:current.id,name:current.name,price:current.price,qty:1,personal:per,variant:v});save();openCart()}
 function buyCurrent(){addCurrent();openCheckout()}
-function quickAdd(id){let p=products.find(x=>String(x.id)===String(id));if(!p)return;cart.push({id:p.id,name:p.name,price:Number(p.price)||0,qty:1,personal:"",variant:variantsFor(p)[0]});save();openCart()}
+function quickAdd(id){let p=products.find(x=>String(x.id)===String(id));if(!p)return;cart.push({id:p.id,name:p.name,price:Number(p.price)||0,qty:1,personal:"",variant:""});save();openCart()}
 function toggleWish(id){let sid=String(id),i=wishlist.findIndex(x=>String(x)===sid);if(i>=0)wishlist.splice(i,1);else wishlist.push(id);save();renderShop();renderWish()}
 function renderWish(){let list=products.filter(p=>wishlist.some(x=>String(x)===String(p.id)));document.getElementById("wishGrid").innerHTML=list.length?list.map(productCard).join(""):`<div class="empty" style="grid-column:1/-1">Your wishlist is empty.</div>`}
 function openCart(){renderCart();document.getElementById("cartDrawer").classList.add("show")}
@@ -347,7 +432,7 @@ function renderCart(){let el=document.getElementById("cartList"),foot=document.g
 function removeItem(i){cart.splice(i,1);save();renderCart()}
 function shippingForPin(pin,total){if(!/^\d{6}$/.test(pin))return null;return total>=1999?0:99}
 function setAddrType(btn,type){document.querySelectorAll(".addrChip").forEach(x=>x.classList.remove("active"));btn.classList.add("active");document.getElementById("orderAddressType").value=type}
-function applyCoupon(){let code=document.getElementById("couponCode").value.trim().toUpperCase(),subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0),msg=document.getElementById("couponMsg");if(code==="ORRIA150"){if(subtotal>=2999){couponDiscount=150;couponCodeApplied=code;msg.className="couponMsg ok";msg.textContent="Coupon applied — you saved ₹150.";refreshCheckout()}else{couponDiscount=0;couponCodeApplied="";msg.className="couponMsg bad";msg.textContent="This coupon is valid on orders of ₹2,999 or more."}}else{couponDiscount=0;couponCodeApplied="";msg.className="couponMsg bad";msg.textContent="Invalid coupon code."}}
+async function applyCoupon(){const code=document.getElementById("couponCode").value.trim().toUpperCase(),subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0),msg=document.getElementById("couponMsg");msg.className="couponMsg";msg.textContent="Checking coupon…";try{const r=await fetch("/api/validate-coupon",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code,subtotal})});const d=await r.json();if(!r.ok||!d.valid)throw new Error(d.error||"Invalid coupon code.");couponDiscount=Number(d.discountAmount);couponCodeApplied=d.code;msg.className="couponMsg ok";msg.textContent="Coupon applied — you saved "+money(couponDiscount)+".";refreshCheckout()}catch(e){couponDiscount=0;couponCodeApplied="";msg.className="couponMsg bad";msg.textContent=e.message;refreshCheckout()}}
 function refreshCheckout(){let subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0),discount=couponDiscount,discounted=Math.max(0,subtotal-discount),pin=document.getElementById("orderPin").value.trim(),ship=shippingForPin(pin,discounted);document.getElementById("shippingBox").textContent=ship===null?"Enter a valid 6-digit PIN to calculate shipping.":(ship===0?"Free shipping":"Shipping: "+money(ship));document.getElementById("checkoutTotal").innerHTML=`Subtotal: ${money(subtotal)}${discount?`<br><span style="font-size:13px;color:#496b4b">Coupon ${couponCodeApplied}: −${money(discount)}</span>`:""}<br>Shipping: ${ship===null?"—":(ship===0?"FREE":money(ship))}<br><strong>Order total: ${money(discounted+(ship||0))}</strong>`}
 function openCheckout(){if(!cart.length){alert("Your bag is empty.");return}closeCart();document.getElementById("modal").classList.add("show");refreshCheckout();document.getElementById("orderPin").oninput=refreshCheckout}
 function closeModal(){document.getElementById("modal").classList.remove("show")}
@@ -428,6 +513,10 @@ async function loadProductsFromSupabase(){
     if(error) throw error;
     const cats={};
     const {data:catData,error:catError}=await ORRIA_SB.from('categories').select('id,name');
+    const {data:imageRows,error:imageError}=await ORRIA_SB.from('product_images').select('product_id,image_url,sort_order').order('sort_order',{ascending:true});
+    if(imageError) console.warn('ORRIA: product gallery load failed',imageError);
+    const galleryByProduct={};
+    (imageRows||[]).forEach(row=>{(galleryByProduct[row.product_id]||(galleryByProduct[row.product_id]=[])).push(row.image_url)});
     if(catError) console.warn("ORRIA: categories load failed",catError);
     (catData||[]).forEach(c=>cats[c.id]=c.name);
     if(Array.isArray(data)){
@@ -438,7 +527,7 @@ async function loadProductsFromSupabase(){
         return {
           id:p.id,name:p.name,category:cats[p.category_id]||local.category||'Decor',cat:cats[p.category_id]||local.cat||'Decor',
           price:Number(p.price)||0,mrp:Number(p.mrp)||Number(p.price)||0,img:p.image_url||local.img||'',
-          desc:richDesc,stock:Number(p.stock)||0,tag:'ORRIA',
+          gallery:galleryByProduct[p.id]||[],desc:richDesc,stock:Number(p.stock)||0,tag:'ORRIA',
           size:local.size||'Hand-finished ORRIA piece',
           material:local.material||'Jesmonite, mineral colour pigments and a protective sealer',
           colours:local.colours||'Ivory, Beige, Terracotta',
@@ -510,21 +599,55 @@ window.orriaCloseCheckout=()=>document.getElementById("orriaCheckout")?.classLis
 window.orriaOpenCart=window.openCart;
 window.orriaOpenCheckout=window.openCheckout;
 
-window.orriaApplyCoupon=()=>{
- let v=document.getElementById("orriaCouponInput").value.trim().toUpperCase();
- store.coupon=(v==="ORRIA150" && cartTotal()>=2999)?150:0;
- save();
- document.getElementById("orriaCouponMsg").textContent=store.coupon?"Coupon applied: ₹150 off":"Use ORRIA150 on orders of ₹2999+";
- document.getElementById("orriaCartTotal").textContent="₹"+Math.max(0,cartTotal()-store.coupon).toLocaleString("en-IN");
+window.orriaApplyCoupon=async()=>{
+ const input=document.getElementById("orriaCouponInput"),msg=document.getElementById("orriaCouponMsg"),code=input.value.trim().toUpperCase();
+ msg.textContent="Checking coupon…";
+ try{
+  const response=await fetch("/api/validate-coupon",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code,subtotal:cartTotal()})});
+  const data=await response.json();
+  if(!response.ok||!data.valid)throw new Error(data.error||"Invalid coupon code.");
+  store.coupon=Number(data.discountAmount);store.couponCode=data.code;save();
+  msg.textContent="Coupon applied: ₹"+store.coupon.toLocaleString("en-IN")+" off";
+  document.getElementById("orriaCartTotal").textContent="₹"+Math.max(0,cartTotal()-store.coupon).toLocaleString("en-IN");
+ }catch(error){store.coupon=0;store.couponCode="";save();msg.textContent=error.message;document.getElementById("orriaCartTotal").textContent="₹"+cartTotal().toLocaleString("en-IN")}
 };
 
-window.orriaPlaceOrder=()=>{
- let f=document.getElementById("orriaOrderForm");
- if(!f.reportValidity())return;
+window.orriaPlaceOrder=async()=>{
+ const form=document.getElementById("orriaOrderForm");
+ if(!form||!form.reportValidity())return;
  if(!store.cart.length){alert("Your bag is empty.");return}
- let order="ORR"+Date.now().toString().slice(-8);
- f.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:50px 10px"><h2>Order placed</h2><p>Your order reference is <b>${order}</b>.</p><p>We’ll use the details provided to process your order.</p><button type="button" class="orriaOrderBtn" onclick="orriaCloseCheckout();orriaCloseCart()">CONTINUE SHOPPING</button></div>`;
- store.cart=[];store.coupon=0;save();renderCart();
+ if(!window.Razorpay){alert("Online payment is temporarily unavailable. Please try again.");return}
+ const fields=form.querySelectorAll("input");
+ const name=fields[0]?.value.trim()||"",phone=fields[1]?.value.trim()||"",email=fields[2]?.value.trim()||"",pin=fields[3]?.value.trim()||"",street=fields[4]?.value.trim()||"",city=fields[5]?.value.trim()||"",state=fields[6]?.value.trim()||"";
+ const note=form.querySelector("textarea")?.value.trim()||"";
+ if(!/^[0-9]{10}$/.test(phone)||!/^[0-9]{6}$/.test(pin)){alert("Please enter a valid 10-digit mobile number and 6-digit PIN.");return}
+ const address=[street,city,state].filter(Boolean).join(", ");
+ const items=store.cart.map(x=>({id:x.id,qty:Number(x.qty),variant:x.variant||"Standard",personal:x.personal||""}));
+ const orderNumber="ORR-"+Date.now().toString().slice(-10);
+ const subtotal=items.reduce((sum,x)=>{const p=find(x.id);return sum+(p?price(p)*x.qty:0)},0);
+ const discount=Math.max(0,Number(store.coupon||0));
+ const discounted=Math.max(0,subtotal-discount);
+ const shipping=discounted>=1999?0:99;
+ const total=Math.round(discounted+shipping);
+ const button=form.querySelector("button[type='button']");
+ if(button){button.disabled=true;button.textContent="CONNECTING TO SECURE PAYMENT…"}
+ try{
+  const response=await fetch("/api/razorpay/create-order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({orderNumber,amount:total,currency:"INR",customer:{name,phone,email},items,couponCode:discount?(store.couponCode||""):"",pin,address:address+(note?" | Note: "+note:"")})});
+  const data=await response.json();
+  if(!response.ok||!data.razorpayOrderId||!data.keyId)throw new Error(data.error||"Unable to create payment order");
+  const checkout=new window.Razorpay({key:data.keyId,amount:data.amount,currency:data.currency||"INR",name:"ORRIA",description:"ORRIA Home Décor Order",order_id:data.razorpayOrderId,prefill:{name,contact:phone,email},notes:{order_number:orderNumber},theme:{color:"#302921"},handler:async function(payment){
+   try{
+    const verify=await fetch("/api/razorpay/verify-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({orderNumber,razorpay_order_id:payment.razorpay_order_id,razorpay_payment_id:payment.razorpay_payment_id,razorpay_signature:payment.razorpay_signature})});
+    const result=await verify.json();
+    if(!verify.ok||!result.verified)throw new Error(result.error||"Payment verification failed");
+    store.cart=[];store.coupon=0;save();renderCart();window.orriaCloseCheckout();window.orriaCloseCart();
+    alert("Payment verified. ORRIA order "+orderNumber+" is confirmed.");
+   }catch(error){alert("Payment may have been received, but verification is pending. Save this payment ID and contact ORRIA: "+payment.razorpay_payment_id);console.error(error)}
+  }});
+  checkout.on("payment.failed",failure=>{alert("Payment failed. Your cart has been kept. Please try again.");console.error(failure?.error||failure)});
+  checkout.open();
+ }catch(error){alert("Secure checkout could not start: "+error.message);console.error(error)}
+ finally{if(button){button.disabled=false;button.textContent="PLACE ORDER"}}
 };
 
 function injectUI(){
@@ -610,7 +733,7 @@ window.orriaV18ChangeQty=d=>{window._orriaV18Q=Math.max(1,Math.min(99,(window._o
 window.orriaV18Add=id=>{
  const p=getP(id);if(!p||stock(p)<=0)return alert("This product is currently out of stock.");
  const q=Math.max(1,Math.min(99,Number(window._orriaV18Q)||1));
- for(let i=0;i<q;i++)cart.push({id:p.id,name:p.name,price:Number(p.price)||0,qty:1,personal:"",variant:variantsFor(p)[0]});
+ for(let i=0;i<q;i++)cart.push({id:p.id,name:p.name,price:Number(p.price)||0,qty:1,personal:"",variant:""});
  localStorage.setItem("orria_cart",JSON.stringify(cart));
  updateCounts();renderCart();
  window.orriaV18Close("orriaProductDetail");
@@ -619,7 +742,7 @@ window.orriaV18Add=id=>{
 window.orriaV18BuyNow=id=>{
  const p=getP(id);if(!p||stock(p)<=0)return alert("This product is currently out of stock.");
  const q=Math.max(1,Math.min(99,Number(window._orriaV18Q)||1));
- for(let i=0;i<q;i++)cart.push({id:p.id,name:p.name,price:Number(p.price)||0,qty:1,personal:"",variant:variantsFor(p)[0]});
+ for(let i=0;i<q;i++)cart.push({id:p.id,name:p.name,price:Number(p.price)||0,qty:1,personal:"",variant:""});
  localStorage.setItem("orria_cart",JSON.stringify(cart));
  updateCounts();renderCart();
  window.orriaV18Close("orriaProductDetail");
@@ -736,15 +859,81 @@ window.orriaV18Ready=true;
 </script>
 <script>/* V32: removed undefined loadRealProducts() call; keeps customer UI responsive. */</script>
 <script id="orriaFinalUpgradeScript">
-window.orSortProducts=function(mode){
-  try{
-    if(!Array.isArray(window.products)) return;
-    const arr=[...window.products];
-    if(mode==='priceLow') arr.sort((a,b)=>Number(a.price||0)-Number(b.price||0));
-    if(mode==='priceHigh') arr.sort((a,b)=>Number(b.price||0)-Number(a.price||0));
-    if(mode==='newest') arr.reverse();
-    window.products=arr;
-    if(typeof window.renderShop==='function') window.renderShop();
-  }catch(e){}
-};
-</script></body></html>
+window.orSortProducts=function(mode){shopSort=mode;renderShop();};
+</script>
+<style id="orriaNavigationMilestone">
+.orUtilityStrip{max-width:1360px;margin:auto;padding:12px 4.2%;display:flex;align-items:center;justify-content:space-between;gap:18px;background:#eee6dc}
+.orUtilityStrip form{display:flex;gap:8px;align-items:center}
+.orUtilityStrip input{width:160px;padding:10px 12px;border:1px solid #cfc2b5;background:#fffdf9}
+.orUtilityStrip button{padding:10px 13px;border:1px solid #302921;background:#302921;color:#fff;font-size:10px;letter-spacing:.08em}
+.orPromoStrip{text-align:center;padding:10px 14px;background:#302921;color:#fff;font-size:10px;letter-spacing:.16em}
+.orCategoryRail{max-width:1360px;margin:auto;padding:15px 4.2%;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none}
+.orCategoryRail button{flex:0 0 auto;border:1px solid #d8cbbf;background:#fffdf9;padding:10px 16px;font-size:11px;letter-spacing:.08em}
+.orCategoryRail button:hover{background:#302921;color:#fff}
+.navlinks{gap:12px;flex-wrap:nowrap;white-space:nowrap}
+.navlinks button{font-size:10px;letter-spacing:.08em;padding:7px 3px}
+@media(max-width:1100px){.navlinks{gap:7px}.navlinks button{font-size:9px}}
+@media(max-width:850px){.navlinks{display:flex;overflow-x:auto;max-width:100%;padding:4px 0 8px;order:3;width:100%;scrollbar-width:none}.navlinks::-webkit-scrollbar{display:none}.nav{flex-wrap:wrap;gap:8px}.actions{margin-left:auto}.orUtilityStrip{padding:12px 16px;align-items:flex-start;flex-direction:column}.orUtilityStrip form{width:100%}.orUtilityStrip input{flex:1;min-width:0;width:auto}.orCategoryRail{padding:12px 16px}}
+</style>
+<script id="orriaNavigationMilestoneScript">
+(function(){
+ function openNavCollection(label,categoryName,query){
+  activeCat=categoryName||"All";
+  go("shop");
+  const search=document.getElementById("search");
+  if(search)search.value=query||"";
+  renderShop();
+  const heading=document.querySelector("#shop h1,#shop .section-title,#shop h2");
+  if(heading)heading.scrollIntoView({behavior:"smooth",block:"start"});
+ }
+ const navItems=[
+  ["HOME DECOR",()=>openNavCollection("HOME DECOR","Decor","")],
+  ["GIFTS",()=>openNavCollection("GIFTS","Gift Sets","")],
+  ["PERSONALISED",()=>openNavCollection("PERSONALISED","Personalised","")],
+  ["OCCASIONS",()=>openNavCollection("OCCASIONS","All","birthday")],
+  ["RECIPIENTS",()=>openNavCollection("RECIPIENTS","All","keepsake")],
+  ["RELATIONSHIPS",()=>openNavCollection("RELATIONSHIPS","All","couple")],
+  ["COLLECTIONS",()=>openNavCollection("COLLECTIONS","All","")],
+  ["NEW ARRIVALS",()=>{const section=[...document.querySelectorAll("#home .section")].find(el=>/New Arrivals/i.test(el.innerText||""));if(section){section.id="newArrivalsGrid";section.scrollIntoView({behavior:"smooth",block:"start"});}else openNavCollection("NEW ARRIVALS","All","");}]
+ ];
+ function install(){
+  const nav=document.querySelector("header .navlinks");
+  if(nav){
+   nav.innerHTML=navItems.map(([label],i)=>'<button type="button" data-or-nav="'+i+'">'+label+'</button>').join("");
+   nav.querySelectorAll("[data-or-nav]").forEach(b=>b.addEventListener("click",()=>navItems[Number(b.dataset.orNav)][1]()));
+  }
+  const home=document.getElementById("home");
+  if(!home)return;
+  if(!document.getElementById("orUtilityStrip")){
+   const utility=document.createElement("div");utility.id="orUtilityStrip";utility.className="orUtilityStrip";
+   utility.innerHTML='<div><b>DELIVERY PIN</b><div id="orPinStatus" style="font-size:11px;color:#766c62;margin-top:4px">Add your PIN to carry it into checkout</div></div><form id="orPinForm"><input id="orDeliveryPin" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="6-digit PIN code" aria-label="6-digit PIN code" required><button type="submit">SAVE PIN</button></form>';
+   const promo=document.createElement("div");promo.className="orPromoStrip";promo.textContent="SMALL-BATCH JESMONITE · HAND-FINISHED PIECES · THOUGHTFUL GIFTING";
+   const rail=document.createElement("nav");rail.className="orCategoryRail";rail.setAttribute("aria-label","Shop product categories");
+   rail.innerHTML=[["TRAYS","Trays"],["COASTERS","Coasters"],["DISHES","Dishes"],["DECOR","Decor"],["GIFT SETS","Gift Sets"],["PERSONALISED","Personalised"]].map(x=>'<button type="button" data-cat="'+x[1]+'">'+x[0]+'</button>').join("");
+   const hero=home.querySelector(".hero");
+   home.insertBefore(utility,hero||home.firstChild);utility.after(promo);promo.after(rail);
+   rail.querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>category(b.dataset.cat)));
+   const saved=localStorage.getItem("orria_delivery_pin")||"";
+   if(saved){document.getElementById("orDeliveryPin").value=saved;document.getElementById("orPinStatus").textContent="PIN "+saved+" saved for checkout";}
+   document.getElementById("orPinForm").addEventListener("submit",e=>{
+    e.preventDefault();const pin=document.getElementById("orDeliveryPin").value.trim();
+    if(!/^[0-9]{6}$/.test(pin)){document.getElementById("orPinStatus").textContent="Enter a valid 6-digit PIN.";return;}
+    localStorage.setItem("orria_delivery_pin",pin);document.getElementById("orPinStatus").textContent="PIN "+pin+" saved. Serviceability will be checked during checkout.";
+   });
+  }
+  const hero=home.querySelector(".hero");
+  const sections=[...home.querySelectorAll(":scope > .section")];
+  const byText=(re)=>sections.find(s=>re.test(s.innerText||""));
+  const categorySection=byText(/Shop by category/i),newArr=byText(/New Arrivals/i),best=byText(/Bestsellers/i),sets=byText(/Build Your ORRIA Set/i);
+  const promise=home.querySelector(".orBrandPromise");
+  if(hero&&promise)hero.after(promise);
+  if(promise&&categorySection)promise.after(categorySection);
+  let anchor=categorySection||promise||hero;
+  if(anchor&&newArr){anchor.after(newArr);anchor=newArr;}
+  if(anchor&&best){anchor.after(best);anchor=best;}
+  if(sets&&anchor&&sets!==anchor)anchor.after(sets);
+ }
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",install);else install();
+})();
+</script>
+</body></html>
