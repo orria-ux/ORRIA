@@ -432,7 +432,7 @@ function renderCart(){let el=document.getElementById("cartList"),foot=document.g
 function removeItem(i){cart.splice(i,1);save();renderCart()}
 function shippingForPin(pin,total){if(!/^\d{6}$/.test(pin))return null;return total>=1999?0:99}
 function setAddrType(btn,type){document.querySelectorAll(".addrChip").forEach(x=>x.classList.remove("active"));btn.classList.add("active");document.getElementById("orderAddressType").value=type}
-async function applyCoupon(){const code=document.getElementById("couponCode").value.trim().toUpperCase(),subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0),msg=document.getElementById("couponMsg");msg.className="couponMsg";msg.textContent="Checking coupon…";try{const r=await fetch("/api/validate-coupon",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code,subtotal})});const d=await r.json();if(!r.ok||!d.valid)throw new Error(d.error||"Invalid coupon code.");couponDiscount=Number(d.discountAmount);couponCodeApplied=d.code;msg.className="couponMsg ok";msg.textContent="Coupon applied — you saved "+money(couponDiscount)+".";refreshCheckout()}catch(e){couponDiscount=0;couponCodeApplied="";msg.className="couponMsg bad";msg.textContent=e.message;refreshCheckout()}}
+async function applyCoupon(){const code=document.getElementById("couponCode").value.trim().toUpperCase(),subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0),msg=document.getElementById("couponMsg");msg.className="couponMsg";msg.textContent="Checking coupon…";try{if(!window.ORRIA_SB)throw new Error("Coupon service is unavailable. Refresh and try again.");const {data,error}=await window.ORRIA_SB.rpc("validate_orria_coupon",{p_code:code,p_subtotal:subtotal});if(error)throw error;if(!data?.valid)throw new Error(data?.error||"Invalid coupon code.");couponDiscount=Number(data.discountAmount);couponCodeApplied=data.code;msg.className="couponMsg ok";msg.textContent="Coupon applied — you saved "+money(couponDiscount)+".";refreshCheckout()}catch(e){couponDiscount=0;couponCodeApplied="";msg.className="couponMsg bad";msg.textContent=e.message||"Unable to validate coupon.";refreshCheckout()}}
 function refreshCheckout(){let subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0),discount=couponDiscount,discounted=Math.max(0,subtotal-discount),pin=document.getElementById("orderPin").value.trim(),ship=shippingForPin(pin,discounted);document.getElementById("shippingBox").textContent=ship===null?"Enter a valid 6-digit PIN to calculate shipping.":(ship===0?"Free shipping":"Shipping: "+money(ship));document.getElementById("checkoutTotal").innerHTML=`Subtotal: ${money(subtotal)}${discount?`<br><span style="font-size:13px;color:#496b4b">Coupon ${couponCodeApplied}: −${money(discount)}</span>`:""}<br>Shipping: ${ship===null?"—":(ship===0?"FREE":money(ship))}<br><strong>Order total: ${money(discounted+(ship||0))}</strong>`}
 function openCheckout(){if(!cart.length){alert("Your bag is empty.");return}closeCart();document.getElementById("modal").classList.add("show");refreshCheckout();document.getElementById("orderPin").oninput=refreshCheckout}
 function closeModal(){document.getElementById("modal").classList.remove("show")}
@@ -603,13 +603,14 @@ window.orriaApplyCoupon=async()=>{
  const input=document.getElementById("orriaCouponInput"),msg=document.getElementById("orriaCouponMsg"),code=input.value.trim().toUpperCase();
  msg.textContent="Checking coupon…";
  try{
-  const response=await fetch("/api/validate-coupon",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code,subtotal:cartTotal()})});
-  const data=await response.json();
-  if(!response.ok||!data.valid)throw new Error(data.error||"Invalid coupon code.");
+  if(!window.ORRIA_SB)throw new Error("Coupon service is unavailable. Refresh and try again.");
+  const {data,error}=await window.ORRIA_SB.rpc("validate_orria_coupon",{p_code:code,p_subtotal:cartTotal()});
+  if(error)throw error;
+  if(!data?.valid)throw new Error(data?.error||"Invalid coupon code.");
   store.coupon=Number(data.discountAmount);store.couponCode=data.code;save();
   msg.textContent="Coupon applied: ₹"+store.coupon.toLocaleString("en-IN")+" off";
   document.getElementById("orriaCartTotal").textContent="₹"+Math.max(0,cartTotal()-store.coupon).toLocaleString("en-IN");
- }catch(error){store.coupon=0;store.couponCode="";save();msg.textContent=error.message;document.getElementById("orriaCartTotal").textContent="₹"+cartTotal().toLocaleString("en-IN")}
+ }catch(error){store.coupon=0;store.couponCode="";save();msg.textContent=error.message||"Unable to validate coupon.";document.getElementById("orriaCartTotal").textContent="₹"+cartTotal().toLocaleString("en-IN")}
 };
 
 window.orriaPlaceOrder=async()=>{
