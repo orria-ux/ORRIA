@@ -432,7 +432,7 @@ function renderCart(){let el=document.getElementById("cartList"),foot=document.g
 function removeItem(i){cart.splice(i,1);save();renderCart()}
 function shippingForPin(pin,total){if(!/^\d{6}$/.test(pin))return null;return total>=1999?0:99}
 function setAddrType(btn,type){document.querySelectorAll(".addrChip").forEach(x=>x.classList.remove("active"));btn.classList.add("active");document.getElementById("orderAddressType").value=type}
-function applyCoupon(){let code=document.getElementById("couponCode").value.trim().toUpperCase(),subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0),msg=document.getElementById("couponMsg");if(code==="ORRIA150"){if(subtotal>=2999){couponDiscount=150;couponCodeApplied=code;msg.className="couponMsg ok";msg.textContent="Coupon applied — you saved ₹150.";refreshCheckout()}else{couponDiscount=0;couponCodeApplied="";msg.className="couponMsg bad";msg.textContent="This coupon is valid on orders of ₹2,999 or more."}}else{couponDiscount=0;couponCodeApplied="";msg.className="couponMsg bad";msg.textContent="Invalid coupon code."}}
+async function applyCoupon(){const code=document.getElementById("couponCode").value.trim().toUpperCase(),subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0),msg=document.getElementById("couponMsg");msg.className="couponMsg";msg.textContent="Checking coupon…";try{const r=await fetch("/api/validate-coupon",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code,subtotal})});const d=await r.json();if(!r.ok||!d.valid)throw new Error(d.error||"Invalid coupon code.");couponDiscount=Number(d.discountAmount);couponCodeApplied=d.code;msg.className="couponMsg ok";msg.textContent="Coupon applied — you saved "+money(couponDiscount)+".";refreshCheckout()}catch(e){couponDiscount=0;couponCodeApplied="";msg.className="couponMsg bad";msg.textContent=e.message;refreshCheckout()}}
 function refreshCheckout(){let subtotal=cart.reduce((s,x)=>s+x.price*x.qty,0),discount=couponDiscount,discounted=Math.max(0,subtotal-discount),pin=document.getElementById("orderPin").value.trim(),ship=shippingForPin(pin,discounted);document.getElementById("shippingBox").textContent=ship===null?"Enter a valid 6-digit PIN to calculate shipping.":(ship===0?"Free shipping":"Shipping: "+money(ship));document.getElementById("checkoutTotal").innerHTML=`Subtotal: ${money(subtotal)}${discount?`<br><span style="font-size:13px;color:#496b4b">Coupon ${couponCodeApplied}: −${money(discount)}</span>`:""}<br>Shipping: ${ship===null?"—":(ship===0?"FREE":money(ship))}<br><strong>Order total: ${money(discounted+(ship||0))}</strong>`}
 function openCheckout(){if(!cart.length){alert("Your bag is empty.");return}closeCart();document.getElementById("modal").classList.add("show");refreshCheckout();document.getElementById("orderPin").oninput=refreshCheckout}
 function closeModal(){document.getElementById("modal").classList.remove("show")}
@@ -599,12 +599,17 @@ window.orriaCloseCheckout=()=>document.getElementById("orriaCheckout")?.classLis
 window.orriaOpenCart=window.openCart;
 window.orriaOpenCheckout=window.openCheckout;
 
-window.orriaApplyCoupon=()=>{
- let v=document.getElementById("orriaCouponInput").value.trim().toUpperCase();
- store.coupon=(v==="ORRIA150" && cartTotal()>=2999)?150:0;
- save();
- document.getElementById("orriaCouponMsg").textContent=store.coupon?"Coupon applied: ₹150 off":"Use ORRIA150 on orders of ₹2999+";
- document.getElementById("orriaCartTotal").textContent="₹"+Math.max(0,cartTotal()-store.coupon).toLocaleString("en-IN");
+window.orriaApplyCoupon=async()=>{
+ const input=document.getElementById("orriaCouponInput"),msg=document.getElementById("orriaCouponMsg"),code=input.value.trim().toUpperCase();
+ msg.textContent="Checking coupon…";
+ try{
+  const response=await fetch("/api/validate-coupon",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({code,subtotal:cartTotal()})});
+  const data=await response.json();
+  if(!response.ok||!data.valid)throw new Error(data.error||"Invalid coupon code.");
+  store.coupon=Number(data.discountAmount);store.couponCode=data.code;save();
+  msg.textContent="Coupon applied: ₹"+store.coupon.toLocaleString("en-IN")+" off";
+  document.getElementById("orriaCartTotal").textContent="₹"+Math.max(0,cartTotal()-store.coupon).toLocaleString("en-IN");
+ }catch(error){store.coupon=0;store.couponCode="";save();msg.textContent=error.message;document.getElementById("orriaCartTotal").textContent="₹"+cartTotal().toLocaleString("en-IN")}
 };
 
 window.orriaPlaceOrder=async()=>{
@@ -627,7 +632,7 @@ window.orriaPlaceOrder=async()=>{
  const button=form.querySelector("button[type='button']");
  if(button){button.disabled=true;button.textContent="CONNECTING TO SECURE PAYMENT…"}
  try{
-  const response=await fetch("/api/razorpay/create-order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({orderNumber,amount:total,currency:"INR",customer:{name,phone,email},items,couponCode:discount?"ORRIA150":"",pin,address:address+(note?" | Note: "+note:"")})});
+  const response=await fetch("/api/razorpay/create-order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({orderNumber,amount:total,currency:"INR",customer:{name,phone,email},items,couponCode:discount?(store.couponCode||""):"",pin,address:address+(note?" | Note: "+note:"")})});
   const data=await response.json();
   if(!response.ok||!data.razorpayOrderId||!data.keyId)throw new Error(data.error||"Unable to create payment order");
   const checkout=new window.Razorpay({key:data.keyId,amount:data.amount,currency:data.currency||"INR",name:"ORRIA",description:"ORRIA Home Décor Order",order_id:data.razorpayOrderId,prefill:{name,contact:phone,email},notes:{order_number:orderNumber},theme:{color:"#302921"},handler:async function(payment){
