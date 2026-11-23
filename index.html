@@ -728,7 +728,7 @@ window.orriaV18ChangeQty=d=>{window._orriaV18Q=Math.max(1,Math.min(99,(window._o
 window.orriaV18Add=id=>{
  const p=getP(id);if(!p||stock(p)<=0)return alert("This product is currently out of stock.");
  const q=Math.max(1,Math.min(99,Number(window._orriaV18Q)||1));
- for(let i=0;i<q;i++)cart.push({id:p.id,name:p.name,price:Number(p.price)||0,qty:1,personal:"",variant:variantsFor(p)[0]});
+ for(let i=0;i<q;i++)cart.push({id:p.id,name:p.name,price:Number(p.price)||0,qty:1,personal:"",variant:""});
  localStorage.setItem("orria_cart",JSON.stringify(cart));
  updateCounts();renderCart();
  window.orriaV18Close("orriaProductDetail");
@@ -737,7 +737,7 @@ window.orriaV18Add=id=>{
 window.orriaV18BuyNow=id=>{
  const p=getP(id);if(!p||stock(p)<=0)return alert("This product is currently out of stock.");
  const q=Math.max(1,Math.min(99,Number(window._orriaV18Q)||1));
- for(let i=0;i<q;i++)cart.push({id:p.id,name:p.name,price:Number(p.price)||0,qty:1,personal:"",variant:variantsFor(p)[0]});
+ for(let i=0;i<q;i++)cart.push({id:p.id,name:p.name,price:Number(p.price)||0,qty:1,personal:"",variant:""});
  localStorage.setItem("orria_cart",JSON.stringify(cart));
  updateCounts();renderCart();
  window.orriaV18Close("orriaProductDetail");
@@ -854,17 +854,7 @@ window.orriaV18Ready=true;
 </script>
 <script>/* V32: removed undefined loadRealProducts() call; keeps customer UI responsive. */</script>
 <script id="orriaFinalUpgradeScript">
-window.orSortProducts=function(mode){
-  try{
-    if(!Array.isArray(window.products)) return;
-    const arr=[...window.products];
-    if(mode==='priceLow') arr.sort((a,b)=>Number(a.price||0)-Number(b.price||0));
-    if(mode==='priceHigh') arr.sort((a,b)=>Number(b.price||0)-Number(a.price||0));
-    if(mode==='newest') arr.reverse();
-    window.products=arr;
-    if(typeof window.renderShop==='function') window.renderShop();
-  }catch(e){}
-};
+window.orSortProducts=function(mode){shopSort=mode;renderShop();};
 </script>
 <style id="orriaNavigationMilestone">
 .orUtilityStrip{max-width:1360px;margin:auto;padding:12px 4.2%;display:flex;align-items:center;justify-content:space-between;gap:18px;background:#eee6dc}
