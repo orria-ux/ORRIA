@@ -9,7 +9,7 @@
     {title:"Beauty & Wellness",items:["Skincare","Beauty Gifts","Grooming","Self-care Hampers"],image:"https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=800&q=82"},
     {title:"Fashion & Lifestyle",items:["Watches","Bags","Jewellery","Accessories"],image:"https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=800&q=82"},
     {title:"Kids, Toys & Games",items:["Soft Toys","Educational Toys","Board Games","Kids Gifts"],image:"https://images.unsplash.com/photo-1566576912321-d58ddd7a6088?auto=format&fit=crop&w=800&q=82"},
-    {title:"Celebrations",items:["Balloons","Party Décor","Celebration Supplies","Anniversary Décor"],image:"https://images.unsplash.com/photo-1530103862676-de8c9deblad?auto=format&fit=crop&w=800&q=82"},
+    {title:"Celebrations",items:["Balloons","Party Décor","Celebration Supplies","Anniversary Décor"],image:"https://images.unsplash.com/photo-1530103862676-de8c9debad?auto=format&fit=crop&w=800&q=82"},
     {title:"Corporate Gifting",items:["Employee Gifts","Client Hampers","Festival Gifts","Bulk Orders"],image:"https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=800&q=82"}
   ];
   const occasions=["Birthday","Anniversary","Wedding","Housewarming","Congratulations","Thank You"];
