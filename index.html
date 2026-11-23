@@ -518,13 +518,42 @@ window.orriaApplyCoupon=()=>{
  document.getElementById("orriaCartTotal").textContent="₹"+Math.max(0,cartTotal()-store.coupon).toLocaleString("en-IN");
 };
 
-window.orriaPlaceOrder=()=>{
- let f=document.getElementById("orriaOrderForm");
- if(!f.reportValidity())return;
+window.orriaPlaceOrder=async()=>{
+ const form=document.getElementById("orriaOrderForm");
+ if(!form||!form.reportValidity())return;
  if(!store.cart.length){alert("Your bag is empty.");return}
- let order="ORR"+Date.now().toString().slice(-8);
- f.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:50px 10px"><h2>Order placed</h2><p>Your order reference is <b>${order}</b>.</p><p>We’ll use the details provided to process your order.</p><button type="button" class="orriaOrderBtn" onclick="orriaCloseCheckout();orriaCloseCart()">CONTINUE SHOPPING</button></div>`;
- store.cart=[];store.coupon=0;save();renderCart();
+ if(!window.Razorpay){alert("Online payment is temporarily unavailable. Please try again.");return}
+ const fields=form.querySelectorAll("input");
+ const name=fields[0]?.value.trim()||"",phone=fields[1]?.value.trim()||"",email=fields[2]?.value.trim()||"",pin=fields[3]?.value.trim()||"",street=fields[4]?.value.trim()||"",city=fields[5]?.value.trim()||"",state=fields[6]?.value.trim()||"";
+ const note=form.querySelector("textarea")?.value.trim()||"";
+ if(!/^[0-9]{10}$/.test(phone)||!/^[0-9]{6}$/.test(pin)){alert("Please enter a valid 10-digit mobile number and 6-digit PIN.");return}
+ const address=[street,city,state].filter(Boolean).join(", ");
+ const items=store.cart.map(x=>({id:x.id,qty:Number(x.qty),variant:x.variant||"Standard",personal:x.personal||""}));
+ const orderNumber="ORR-"+Date.now().toString().slice(-10);
+ const subtotal=items.reduce((sum,x)=>{const p=find(x.id);return sum+(p?price(p)*x.qty:0)},0);
+ const discount=store.coupon===150?150:0;
+ const discounted=Math.max(0,subtotal-discount);
+ const shipping=discounted>=1999?0:99;
+ const total=Math.round(discounted+shipping);
+ const button=form.querySelector("button[type='button']");
+ if(button){button.disabled=true;button.textContent="CONNECTING TO SECURE PAYMENT…"}
+ try{
+  const response=await fetch("/api/razorpay/create-order",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({orderNumber,amount:total,currency:"INR",customer:{name,phone,email},items,couponCode:discount?"ORRIA150":"",pin,address:address+(note?" | Note: "+note:"")})});
+  const data=await response.json();
+  if(!response.ok||!data.razorpayOrderId||!data.keyId)throw new Error(data.error||"Unable to create payment order");
+  const checkout=new window.Razorpay({key:data.keyId,amount:data.amount,currency:data.currency||"INR",name:"ORRIA",description:"ORRIA Home Décor Order",order_id:data.razorpayOrderId,prefill:{name,contact:phone,email},notes:{order_number:orderNumber},theme:{color:"#302921"},handler:async function(payment){
+   try{
+    const verify=await fetch("/api/razorpay/verify-payment",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({orderNumber,razorpay_order_id:payment.razorpay_order_id,razorpay_payment_id:payment.razorpay_payment_id,razorpay_signature:payment.razorpay_signature})});
+    const result=await verify.json();
+    if(!verify.ok||!result.verified)throw new Error(result.error||"Payment verification failed");
+    store.cart=[];store.coupon=0;save();renderCart();window.orriaCloseCheckout();window.orriaCloseCart();
+    alert("Payment verified. ORRIA order "+orderNumber+" is confirmed.");
+   }catch(error){alert("Payment may have been received, but verification is pending. Save this payment ID and contact ORRIA: "+payment.razorpay_payment_id);console.error(error)}
+  }});
+  checkout.on("payment.failed",failure=>{alert("Payment failed. Your cart has been kept. Please try again.");console.error(failure?.error||failure)});
+  checkout.open();
+ }catch(error){alert("Secure checkout could not start: "+error.message);console.error(error)}
+ finally{if(button){button.disabled=false;button.textContent="PLACE ORDER"}}
 };
 
 function injectUI(){
